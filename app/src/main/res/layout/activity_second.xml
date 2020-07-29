@@ -10,24 +10,16 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="375dp"
-        android:layout_height="84dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="#00BCD4"
-        android:capitalize="none"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:clickable="false"
-        android:fontFamily="@font/cutive_mono"
-        android:password="false"
-        android:phoneNumber="false"
         android:text="@string/default_message"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="#673AB7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.2"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
