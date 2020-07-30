@@ -10,7 +10,7 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="false"
         android:text="@string/default_message"
@@ -20,6 +20,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.2"/>
+        app:layout_constraintWidth_percent="@dimen/default_constraint_percentage"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
