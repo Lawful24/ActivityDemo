@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/fragment_message"
-        android:name="com.appplanet.activitydemo.MessageFragment"
+        android:name="com.appplanet.activitydemo.MainFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
