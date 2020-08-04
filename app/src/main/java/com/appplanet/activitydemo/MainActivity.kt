@@ -8,12 +8,12 @@ import android.view.View
 import android.widget.EditText
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
     }
 
-    /** Called when the user taps the Send button */
     fun switchActivity(view: View) {
         val editText = findViewById<EditText>(R.id.editTextTextPersonName)
         val message = editText.text.toString()
