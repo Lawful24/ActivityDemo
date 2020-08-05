@@ -15,13 +15,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val sendButton = findViewById<Button>(R.id.activity_button) as Button
-        sendButton.setOnClickListener {
-            val editText = findViewById<EditText>(R.id.editTextTextPersonName)
-            val message = editText.text.toString()
-            val intent = Intent(this, SecondActivity::class.java).apply {
-                putExtra(EXTRA_MESSAGE, message)
-            }
-            startActivity(intent)
+        sendButton.setOnClickListener(listener)
+    }
+
+    val listener = View.OnClickListener {
+        val editText = findViewById<EditText>(R.id.editTextTextPersonName)
+        val message = editText.text.toString()
+        val intent = Intent(this, SecondActivity::class.java).apply {
+            putExtra(EXTRA_MESSAGE, message)
         }
+        startActivity(intent)
     }
 }
