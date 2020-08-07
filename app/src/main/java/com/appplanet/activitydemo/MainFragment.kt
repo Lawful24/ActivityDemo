@@ -1,42 +1,23 @@
 package com.appplanet.activitydemo
 
-import android.content.Intent
 import android.os.Bundle
-import android.provider.AlarmClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.fragment_main.view.*
 
-private lateinit var sendButton: Button
+lateinit var communicator: Communicator
 
 class MainFragment : Fragment() {
-    companion object {
-        fun newInstance(): MainFragment {
-            return MainFragment()
-        }
-    }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val rootView = inflater.inflate(R.layout.fragment_main, container, false)
-        sendButton = rootView.findViewById(R.id.activity_button)
 
-        sendButton.setOnClickListener {
-            val editText = rootView.findViewById<EditText>(R.id.editTextTextPersonName)
-            val message = editText.text.toString()
+        communicator = activity as Communicator
 
-            val fragmentManager = fragmentManager
-            fragmentManager!!.beginTransaction()
-                .replace(R.id.fragment_container, MessageFragment())
-                .addToBackStack(null)
-                .commit()
+        rootView.activity_button.setOnClickListener {
+            communicator.passDataCom(rootView.editTextTextPersonName.text.toString())
         }
         return rootView
     }
