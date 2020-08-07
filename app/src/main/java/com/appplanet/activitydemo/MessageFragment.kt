@@ -1,9 +1,11 @@
 package com.appplanet.activitydemo
 
 import android.os.Bundle
+import android.provider.AlarmClock.EXTRA_MESSAGE
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 
 class MessageFragment : Fragment() {
@@ -18,6 +20,7 @@ class MessageFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_message, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_message, container, false)
+        return rootView
     }
 }
