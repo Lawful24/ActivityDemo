@@ -13,8 +13,6 @@ import kotlinx.android.synthetic.main.fragment_main.view.editTextTextPersonName
 lateinit var communicator: Communicator
 
 private lateinit var recyclerView: RecyclerView
-private lateinit var viewAdapter: RecyclerView.Adapter<*>
-private lateinit var viewManager: RecyclerView.LayoutManager
 
 var messages = listOf("This", "is", "a", "RecyclerView")
 
@@ -24,8 +22,8 @@ class MainFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_main, container, false)
 
         recyclerView = rootView.findViewById(R.id.recyclerView)
-        viewManager = LinearLayoutManager(activity)
-        viewAdapter = MessageAdapter(messages)
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+        recyclerView.adapter = MessageAdapter(messages)
         recyclerView.setHasFixedSize(true)
 
         communicator = activity as Communicator
