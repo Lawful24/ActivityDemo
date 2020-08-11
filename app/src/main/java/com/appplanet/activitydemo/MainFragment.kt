@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,21 +17,27 @@ private lateinit var recyclerView: RecyclerView
 
 var messages = listOf("This", "is", "a", "RecyclerView")
 
+var recyclerTextView: TextView? = null
+
 class MainFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val rootView = inflater.inflate(R.layout.fragment_main, container, false)
-
-        recyclerView = rootView.findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(activity)
-        recyclerView.adapter = MessageAdapter(messages)
-        recyclerView.setHasFixedSize(true)
 
         communicator = activity as Communicator
 
         rootView.activity_button.setOnClickListener {
             communicator.passDataCom(rootView.editTextTextPersonName.text.toString())
         }
+
+        // recyclerView declaration
+        recyclerView = rootView.findViewById(R.id.recycler_view)
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+        recyclerView.adapter = MessageAdapter(messages)
+        recyclerView.setHasFixedSize(true)
+
+        recyclerTextView = rootView.findViewById(R.id.card_title)
+
         return rootView
     }
 }
