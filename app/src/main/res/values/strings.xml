@@ -3,4 +3,5 @@
     <string name="button_yeet">yeet</string>
     <string name="hint_text">Enter a message...</string>
     <string name="default_message">yeet</string>
+    <string name="recyclerview_text">dummy text</string>
 </resources>
