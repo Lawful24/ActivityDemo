@@ -4,11 +4,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.card_layout.view.card_title
 
-class MessageAdapter(private val messages: List<String>) : RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
+class MessageAdapter(private val messages: List<String>, private val listener: View.OnClickListener) : RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.card_layout, parent, false)
@@ -17,11 +16,9 @@ class MessageAdapter(private val messages: List<String>) : RecyclerView.Adapter<
 
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         val message = messages[position]
-        val fragment = MessageFragment()
 
-        holder.cardText.setOnClickListener {
-            switchFragment(fragment)
-        }
+        holder.cardText.setOnClickListener(listener)
+
         holder.setData(message)
     }
 
@@ -34,12 +31,5 @@ class MessageAdapter(private val messages: List<String>) : RecyclerView.Adapter<
         fun setData(message: String?) {
             cardText.text = message
         }
-    }
-
-    private fun switchFragment(nextFragment: Fragment) {
-        val transaction = MainActivity().supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_container, nextFragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
     }
 }

@@ -26,6 +26,17 @@ class MainFragment : Fragment() {
 
         communicator = activity as Communicator
 
+        fun switchFragment(nextFragment: Fragment) {
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragment_container, nextFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
+
+        val textViewClickListener = View.OnClickListener {
+            switchFragment(MessageFragment())
+        }
+
         rootView.activity_button.setOnClickListener {
             communicator.passDataCom(rootView.editTextTextPersonName.text.toString())
         }
@@ -33,7 +44,7 @@ class MainFragment : Fragment() {
         // recyclerView declaration
         recyclerView = rootView.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        recyclerView.adapter = MessageAdapter(messages)
+        recyclerView.adapter = MessageAdapter(messages, textViewClickListener)
         recyclerView.setHasFixedSize(true)
 
         recyclerTextView = rootView.findViewById(R.id.card_title)
