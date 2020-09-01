@@ -17,8 +17,6 @@ var movies = listOf(movie1, movie2, movie3, movie4, movie5)
 
 var recyclerTextView: TextView? = null
 
-var defaultPosition: Int = 0
-
 class MainFragment : Fragment(), OnItemClickedListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -31,11 +29,6 @@ class MainFragment : Fragment(), OnItemClickedListener {
             transaction.commit()
         }
 
-        val textViewClickListener = View.OnClickListener {
-            defaultPosition = arguments?.getInt("title_txt", defaultPosition)!! // ???
-            switchFragment(MovieDetailsFragment(movies[defaultPosition].title))
-        }
-
         rootView.activity_button.setOnClickListener {
             switchFragment(MovieDetailsFragment(editTextTextPersonName.text.toString()))
         }
@@ -43,7 +36,7 @@ class MainFragment : Fragment(), OnItemClickedListener {
         // recyclerView declaration
         recyclerView = rootView.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        recyclerView.adapter = MessageAdapter(movies, textViewClickListener)
+        recyclerView.adapter = MessageAdapter(movies, this)
         recyclerView.setHasFixedSize(true)
 
         recyclerTextView = rootView.findViewById(R.id.card_title)
@@ -51,15 +44,15 @@ class MainFragment : Fragment(), OnItemClickedListener {
         return rootView
     }
 
-    override fun onItemClicked(position: Int) {
-        val bundle = Bundle()
-        bundle.putInt("title_txt", position)
-
-        val movieFragment = MovieDetailsFragment(movies[position].title)
-        movieFragment.arguments = bundle
+    override fun onItemClicked(item: Movie) {
+        val movieFragment = MovieDetailsFragment(item.title)
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragment_container, movieFragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 }
 
 interface OnItemClickedListener {
-    fun onItemClicked(position: Int)
+    fun onItemClicked(item: Movie)
 }

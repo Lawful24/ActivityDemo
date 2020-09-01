@@ -7,14 +7,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.card_layout.view.card_title
 
-lateinit var itemClickedListener: OnItemClickedListener
-
-class MessageAdapter(private val movies: List<Movie>, private val listener: View.OnClickListener) : RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
+class MessageAdapter(private val movies: List<Movie>, private val onItemClickedListener: OnItemClickedListener) : RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.card_layout, parent, false)
-
-        // itemClickedListener =
 
         return MessageViewHolder(view)
     }
@@ -22,11 +18,11 @@ class MessageAdapter(private val movies: List<Movie>, private val listener: View
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         val movieListElement = movies[position]
 
-        holder.cardText.setOnClickListener(listener)
+        holder.cardText.setOnClickListener {
+            onItemClickedListener.onItemClicked(movieListElement)
+        }
 
         holder.setData(movieListElement.title)
-
-        itemClickedListener.onItemClicked(position)
     }
 
     override fun getItemCount() = movies.size
