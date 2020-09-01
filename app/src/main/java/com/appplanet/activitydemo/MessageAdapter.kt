@@ -7,7 +7,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.card_layout.view.card_title
 
-class MessageAdapter(private val movies: List<Movie>, private val onItemClickedListener: OnItemClickedListener) : RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
+class MessageAdapter(
+    private val movies: List<Movie>,
+    private val onItemClickedListener: OnItemClickedListener
+) : RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.card_layout, parent, false)
