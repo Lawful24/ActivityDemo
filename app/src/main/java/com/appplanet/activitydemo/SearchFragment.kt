@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_main.editTextTextPersonName
-import kotlinx.android.synthetic.main.fragment_main.view.activity_button
 
 private lateinit var recyclerView: RecyclerView
 
@@ -17,19 +17,17 @@ val movies = MovieFactory.getMovies()
 
 var recyclerTextView: TextView? = null
 
-class MainFragment : Fragment(), OnItemClickedListener {
+class SearchFragment : Fragment(), OnItemClickedListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val rootView = inflater.inflate(R.layout.fragment_main, container, false)
-
-        return rootView
+        return inflater.inflate(R.layout.fragment_search, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.activity_button.setOnClickListener {
-            switchFragment(MovieDetailsFragment(editTextTextPersonName.text.toString()))
+        view.findViewById<Button>(R.id.activity_button).setOnClickListener {
+            switchFragment(MovieDetailsFragment(view.findViewById<EditText>(R.id.search_bar).text.toString()))
         }
 
         // recyclerView declaration

@@ -15,11 +15,11 @@
         android:layout_marginEnd="@dimen/default_margin"
         android:text="@string/button_yeet"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/editTextTextPersonName"
+        app:layout_constraintStart_toEndOf="@+id/search_bar"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/search_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/default_margin"
@@ -27,6 +27,7 @@
         android:hint="@string/hint_text"
         android:inputType="textPersonName"
         android:singleLine="false"
+        android:drawableEnd="@drawable/search_icon"
         app:layout_constraintEnd_toStartOf="@+id/activity_button"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +42,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName"
+        app:layout_constraintTop_toBottomOf="@+id/search_bar"
         app:layout_constraintVertical_bias="1.0"
         tools:listitem="@layout/card_layout" />
 
