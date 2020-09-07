@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_main.editTextTextPersonName
+import kotlinx.android.synthetic.main.fragment_main.view.activity_button
 
 private lateinit var recyclerView: RecyclerView
 
@@ -28,8 +28,8 @@ class MainFragment : Fragment(), OnItemClickedListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<Button>(R.id.activity_button).setOnClickListener {
-            switchFragment(MovieDetailsFragment(view.findViewById<EditText>(R.id.editTextTextPersonName).text.toString()))
+        view.activity_button.setOnClickListener {
+            switchFragment(MovieDetailsFragment(editTextTextPersonName.text.toString()))
         }
 
         // recyclerView declaration

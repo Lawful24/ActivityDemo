@@ -16,6 +16,7 @@ object MovieFactory {
         movies.add(movie3)
         movies.add(movie4)
         movies.add(movie5)
+
         return movies
     }
 }
