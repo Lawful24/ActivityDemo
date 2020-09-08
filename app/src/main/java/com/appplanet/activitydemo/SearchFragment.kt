@@ -1,15 +1,20 @@
 package com.appplanet.activitydemo
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.util.Timer
+import java.util.TimerTask
 
 private lateinit var recyclerView: RecyclerView
 
@@ -25,6 +30,28 @@ class SearchFragment : Fragment(), OnItemClickedListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        view.findViewById<EditText>(R.id.search_bar).addTextChangedListener(object : TextWatcher {
+            private var timer: Timer = Timer()
+            private val delay: Long = 500 // ms
+            private val duration: Int = Toast.LENGTH_SHORT
+
+            override fun afterTextChanged(s: Editable) {
+                timer.cancel()
+                timer = Timer()
+                timer.schedule(object: TimerTask() {
+                    override fun run() {
+                        requireActivity().runOnUiThread(Runnable {
+                            Toast.makeText(context, s, duration).show()
+                        })
+                    }
+                }, delay)
+            }
+
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+        })
 
         view.findViewById<Button>(R.id.activity_button).setOnClickListener {
             switchFragment(MovieDetailsFragment(view.findViewById<EditText>(R.id.search_bar).text.toString()))
