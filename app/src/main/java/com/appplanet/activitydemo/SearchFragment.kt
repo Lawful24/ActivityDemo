@@ -23,7 +23,11 @@ var recyclerTextView: TextView? = null
 
 class SearchFragment : Fragment(), OnItemClickedListener {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View =
         inflater.inflate(R.layout.fragment_search, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,10 +52,10 @@ class SearchFragment : Fragment(), OnItemClickedListener {
             private val duration: Int = Toast.LENGTH_SHORT
 
             override fun afterTextChanged(s: Editable) {
+                timer.cancel()
+                timer = Timer()
                 if (s.isNotEmpty()) {
-                    timer.cancel()
-                    timer = Timer()
-                    timer.schedule(object: TimerTask() {
+                    timer.schedule(object : TimerTask() {
                         override fun run() {
                             requireActivity().runOnUiThread(Runnable {
                                 Toast.makeText(context, s, duration).show()
