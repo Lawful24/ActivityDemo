@@ -12,16 +12,16 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
 import java.util.Timer
 import java.util.TimerTask
 
 private lateinit var recyclerView: RecyclerView
 
-val movies = MovieFactory.getMovies()
-
 var recyclerTextView: TextView? = null
 
-class SearchFragment : Fragment(), OnItemClickedListener {
+class SearchFragment(private val parcelize: Parcelize) : Fragment(), OnItemClickedListener {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,6 +29,8 @@ class SearchFragment : Fragment(), OnItemClickedListener {
         savedInstanceState: Bundle?
     ): View =
         inflater.inflate(R.layout.fragment_search, container, false)
+
+    private val movies = MovieResultsFactory.getMovieResults(parcelize)!!.results
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -75,15 +77,8 @@ class SearchFragment : Fragment(), OnItemClickedListener {
         }
     }
 
-    private fun switchFragment(nextFragment: Fragment) {
-        val transaction = requireActivity().supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_container, nextFragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
-    }
-
     override fun onItemClicked(item: Movie) {
-        val movieFragment = MovieDetailsFragment(item.title)
+        val movieFragment = MovieDetailsFragment(item)
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.run {
             replace(R.id.fragment_container, movieFragment)
