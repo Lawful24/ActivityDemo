@@ -12,8 +12,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
 import java.util.Timer
 import java.util.TimerTask
 
@@ -21,7 +19,7 @@ private lateinit var recyclerView: RecyclerView
 
 var recyclerTextView: TextView? = null
 
-class SearchFragment(private val parcelize: Parcelize) : Fragment(), OnItemClickedListener {
+class SearchFragment(private val jsonInterface: JsonInterface) : Fragment(), OnItemClickedListener {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,7 +28,7 @@ class SearchFragment(private val parcelize: Parcelize) : Fragment(), OnItemClick
     ): View =
         inflater.inflate(R.layout.fragment_search, container, false)
 
-    private val movies = MovieResultsFactory.getMovieResults(parcelize)!!.results
+    private val movies = MovieResultsFactory.getMovieResults(jsonInterface)!!.results
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
