@@ -2,6 +2,7 @@ package com.appplanet.activitydemo
 
 import android.content.res.AssetManager
 import android.os.Bundle
+import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import java.io.InputStream
 
@@ -13,11 +14,14 @@ class MainActivity : AppCompatActivity(), JsonInterface {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val assetManager: AssetManager = applicationContext.assets
-        val inputStream: InputStream = assetManager.open("results.json")
-        jsonText = inputStream.bufferedReader().use {
-            it.readText()
+        val bgThread = Thread {
+            val assetManager: AssetManager = applicationContext.assets
+            val inputStream: InputStream = assetManager.open("results.json")
+            jsonText = inputStream.bufferedReader().use {
+                it.readText()
+            }
         }
+        bgThread.start()
 
         val transaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.fragment_container, SearchFragment(this))
