@@ -12,14 +12,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.io.InputStream
 import java.util.Timer
 import java.util.TimerTask
 
-private lateinit var recyclerView: RecyclerView
+class SearchFragment() : Fragment(), OnItemClickedListener {
 
-var recyclerTextView: TextView? = null
-
-class SearchFragment(private val jsonInterface: JsonInterface) : Fragment(), OnItemClickedListener {
+    private lateinit var recyclerView: RecyclerView
+    private var recyclerTextView: TextView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,7 +28,7 @@ class SearchFragment(private val jsonInterface: JsonInterface) : Fragment(), OnI
     ): View =
         inflater.inflate(R.layout.fragment_search, container, false)
 
-    private val movies = MovieResultsFactory.getMovieResults(jsonInterface)!!.results
+    private val movies = MovieResultsFactory.getMovieResults()!!.results
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

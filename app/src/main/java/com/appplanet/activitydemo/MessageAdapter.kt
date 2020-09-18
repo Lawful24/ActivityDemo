@@ -32,7 +32,7 @@ class MessageAdapter(
 
     class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val cardText : TextView = itemView.card_title
+        val cardText: TextView = itemView.card_title
 
         fun setData(message: String?) {
             cardText.text = message

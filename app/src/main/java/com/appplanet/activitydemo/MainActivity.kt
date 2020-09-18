@@ -2,13 +2,12 @@ package com.appplanet.activitydemo
 
 import android.content.res.AssetManager
 import android.os.Bundle
-import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import java.io.InputStream
 
 var jsonText: String = ""
 
-class MainActivity : AppCompatActivity(), JsonInterface {
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,15 +23,7 @@ class MainActivity : AppCompatActivity(), JsonInterface {
         bgThread.start()
 
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.add(R.id.fragment_container, SearchFragment(this))
+        transaction.add(R.id.fragment_container, SearchFragment())
         transaction.commit()
     }
-
-    override fun getJson() : String {
-        return jsonText
-    }
-}
-
-interface JsonInterface {
-    fun getJson() : String
 }

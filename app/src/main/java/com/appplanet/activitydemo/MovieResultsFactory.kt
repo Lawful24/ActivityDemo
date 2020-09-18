@@ -7,7 +7,7 @@ object MovieResultsFactory {
     private val moshi: Moshi = Moshi.Builder().build()
     private val adapter: JsonAdapter<MovieResults> = moshi.adapter(MovieResults::class.java)
 
-    fun getMovieResults(jsonInterface: JsonInterface): MovieResults? {
-        return adapter.fromJson(jsonInterface.getJson())
+    fun getMovieResults(): MovieResults? {
+        return adapter.fromJson("results.json")
     }
 }

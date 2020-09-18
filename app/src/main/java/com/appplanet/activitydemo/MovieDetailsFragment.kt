@@ -9,7 +9,11 @@ import kotlinx.android.synthetic.main.fragment_movie_details.view.textView
 
 class MovieDetailsFragment(private val movie: Movie) : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         val rootView = inflater.inflate(R.layout.fragment_movie_details, container, false)
 
         rootView.textView.text = movie.title
