@@ -8,6 +8,6 @@ object MovieResultsFactory {
     private val adapter: JsonAdapter<MovieResults> = moshi.adapter(MovieResults::class.java)
 
     fun getMovieResults(): MovieResults? {
-        return adapter.fromJson("results.json")
+        return adapter.fromJson(jsonText)
     }
 }

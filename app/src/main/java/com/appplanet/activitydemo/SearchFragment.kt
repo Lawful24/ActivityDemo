@@ -1,5 +1,6 @@
 package com.appplanet.activitydemo
 
+import android.content.res.AssetManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -16,7 +17,9 @@ import java.io.InputStream
 import java.util.Timer
 import java.util.TimerTask
 
-class SearchFragment() : Fragment(), OnItemClickedListener {
+var jsonText: String = ""
+
+class SearchFragment : Fragment(), OnItemClickedListener {
 
     private lateinit var recyclerView: RecyclerView
     private var recyclerTextView: TextView? = null
@@ -28,10 +31,11 @@ class SearchFragment() : Fragment(), OnItemClickedListener {
     ): View =
         inflater.inflate(R.layout.fragment_search, container, false)
 
-    private val movies = MovieResultsFactory.getMovieResults()!!.results
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        importJson()
+        val movies = MovieResultsFactory.getMovieResults()!!.results
 
         view.findViewById<EditText>(R.id.search_bar).addTextChangedListener(initSearchBarListener())
 
@@ -73,6 +77,17 @@ class SearchFragment() : Fragment(), OnItemClickedListener {
                 // no-op
             }
         }
+    }
+
+    private fun importJson() {
+        val bgThread = Thread {
+            val assetManager: AssetManager = requireActivity().assets
+            val inputStream: InputStream = assetManager.open("results.json")
+            jsonText = inputStream.bufferedReader().use {
+                it.readText()
+            }
+        }
+        bgThread.start()
     }
 
     override fun onItemClicked(item: Movie) {
