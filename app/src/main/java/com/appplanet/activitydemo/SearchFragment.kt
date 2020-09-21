@@ -80,14 +80,14 @@ class SearchFragment : Fragment(), OnItemClickedListener {
     }
 
     private fun importJson() {
-        val bgThread = Thread {
+        val importThread = Thread {
             val assetManager: AssetManager = requireActivity().assets
             val inputStream: InputStream = assetManager.open("results.json")
             jsonText = inputStream.bufferedReader().use {
                 it.readText()
             }
         }
-        bgThread.start()
+        importThread.start()
     }
 
     override fun onItemClicked(item: Movie) {

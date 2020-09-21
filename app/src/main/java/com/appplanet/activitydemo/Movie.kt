@@ -7,7 +7,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Movie(
     val id: Int,
-    @Json(name = "total_results") val releaseDate: Int,
+    @Json(name = "release_date") val releaseDate: Int,
     val title: String,
     @Json(name = "vote_average") val voteAverage: Double
 ) : Parcelable
