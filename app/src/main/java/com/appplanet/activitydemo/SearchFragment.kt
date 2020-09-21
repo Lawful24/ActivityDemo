@@ -91,7 +91,8 @@ class SearchFragment : Fragment(), OnItemClickedListener {
     }
 
     override fun onItemClicked(item: Movie) {
-        val movieFragment = MovieDetailsFragment(item)
+        val movieFragment = MovieDetailsFragment.getInstance(item)
+
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.run {
             replace(R.id.fragment_container, movieFragment)
