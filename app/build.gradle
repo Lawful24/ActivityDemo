@@ -14,7 +14,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        // buildConfigField "String", "MOVIE_API_KEY", getSystemOrProjectProperty('movieApiKey')
+        buildConfigField 'String', "MOVIE_API_KEY", ActivityDemo_movieApiKey
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
