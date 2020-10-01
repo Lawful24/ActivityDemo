@@ -24,7 +24,7 @@ class MovieDetailsFragment : Fragment() {
     companion object {
         fun getInstance(movie: Movie): MovieDetailsFragment {
             val args = Bundle()
-            args.putParcelable(BuildConfig.MOVIE_API_KEY, movie)
+            args.putParcelable(apiKey, movie)
             val fragment = MovieDetailsFragment()
             fragment.arguments = args
             return fragment
