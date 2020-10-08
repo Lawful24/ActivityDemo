@@ -15,19 +15,32 @@ class MovieDetailsFragment : Fragment() {
     ): View {
         val rootView = inflater.inflate(R.layout.fragment_movie_details, container, false)
 
-        val movie = arguments?.getParcelable<Movie>(BuildConfig.MOVIE_API_KEY)
-        rootView.textView.text = movie?.title
+        val movieId = arguments?.getInt(BuildConfig.MOVIE_API_KEY)
+
+        rootView.textView.text = getMovieFromList(movieId).title
 
         return rootView
     }
 
     companion object {
-        fun getInstance(movie: Movie): MovieDetailsFragment {
+        fun getInstance(movieId: Int): MovieDetailsFragment {
             val args = Bundle()
-            args.putParcelable(apiKey, movie)
+            args.putInt(BuildConfig.MOVIE_API_KEY, movieId)
             val fragment = MovieDetailsFragment()
             fragment.arguments = args
             return fragment
         }
+    }
+
+    // dumb logic with no regard to an empty list or an unknown id
+    private fun getMovieFromList(searchedId: Int?): Movie {
+        var counter = 0
+        while (counter < movies.size && searchedId != movies[counter].id) {
+            if (searchedId != movies[counter].id) {
+                counter++
+            }
+
+        }
+        return movies[counter]
     }
 }

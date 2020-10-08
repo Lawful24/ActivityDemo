@@ -18,6 +18,7 @@ import java.util.Timer
 import java.util.TimerTask
 
 var jsonText: String = ""
+lateinit var movies: List<Movie>
 
 class SearchFragment : Fragment(), OnItemClickedListener {
 
@@ -35,7 +36,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
         super.onViewCreated(view, savedInstanceState)
 
         importJson()
-        val movies = MovieResultsFactory.getMovieResults()!!.results
+        movies = MovieResultsFactory.getMovieResults()!!.results
 
         view.findViewById<EditText>(R.id.search_bar).addTextChangedListener(initSearchBarListener())
 
@@ -91,7 +92,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
     }
 
     override fun onItemClicked(item: Movie) {
-        val movieFragment = MovieDetailsFragment.getInstance(item)
+        val movieFragment = MovieDetailsFragment.getInstance(item.id)
 
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.run {
