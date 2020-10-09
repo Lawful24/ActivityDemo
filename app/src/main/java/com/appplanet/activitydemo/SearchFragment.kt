@@ -18,7 +18,6 @@ import java.util.Timer
 import java.util.TimerTask
 
 var jsonText: String = ""
-lateinit var movies: List<Movie>
 
 class SearchFragment : Fragment(), OnItemClickedListener {
 
@@ -36,7 +35,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
         super.onViewCreated(view, savedInstanceState)
 
         importJson()
-        movies = MovieResultsFactory.getMovieResults()!!.results
+        val movies = MovieResultsFactory.getMovieResults()!!.results
 
         view.findViewById<EditText>(R.id.search_bar).addTextChangedListener(initSearchBarListener())
 
