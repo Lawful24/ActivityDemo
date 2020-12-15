@@ -9,7 +9,7 @@ import com.appplanet.activitydemo.network.model.Movie
 import kotlinx.android.synthetic.main.card_layout.view.card_title
 
 class MessageAdapter(
-    private val movies: List<Movie>,
+    private var movieList: List<Movie>,
     private val onItemClickedListener: OnItemClickedListener
 ) : RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
 
@@ -20,7 +20,7 @@ class MessageAdapter(
     }
 
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
-        val movieListElement = movies[position]
+        val movieListElement = movieList[position]
 
         holder.cardText.setOnClickListener {
             onItemClickedListener.onItemClicked(movieListElement)
@@ -29,7 +29,8 @@ class MessageAdapter(
         holder.setData(movieListElement.title)
     }
 
-    override fun getItemCount() = movies.size
+
+    override fun getItemCount() = movieList.size
 
     class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -38,5 +39,10 @@ class MessageAdapter(
         fun setData(message: String?) {
             cardText.text = message
         }
+    }
+
+    fun setMovies(movies: List<Movie>) {
+        this.movieList = movies
+        notifyDataSetChanged()  // notifies the RecyclerView about the movieList being modified
     }
 }

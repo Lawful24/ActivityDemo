@@ -21,7 +21,7 @@ class MovieController {
         tmdbService.getMoviesFromQuery().enqueue(object: Callback<MovieResponse> {
             override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
                 val movieResponse = response.body()
-                val movieListFromResponse = movieResponse?.results
+                val movieListFromResponse = movieResponse!!.results // todo: do research on safe and non-null asserted calls
                 listener.getResult(movieListFromResponse)
                 // called the interface after the response was handled
             }

@@ -13,11 +13,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.appplanet.activitydemo.network.api.TmdbService
+import com.appplanet.activitydemo.network.ServerResponseListener
+import com.appplanet.activitydemo.network.controller.MovieController
 import com.appplanet.activitydemo.network.model.Movie
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import retrofit2.Retrofit
 import java.io.InputStream
 import java.util.Timer
 import java.util.TimerTask
@@ -28,6 +26,8 @@ class SearchFragment : Fragment(), OnItemClickedListener {
 
     private lateinit var recyclerView: RecyclerView
     private var recyclerTextView: TextView? = null
+    private lateinit var movieController: MovieController   // is lateinit okay?
+    private lateinit var adapter: MessageAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,8 +48,11 @@ class SearchFragment : Fragment(), OnItemClickedListener {
 
         // get text from the EditText
 
-        // should pass a list to the adapter:
-        // val moviesFromQuery
+        // send query to server
+
+        // get response
+
+        // pass the movie list to the adapter
 
         initRecyclerView(view, movies)
     }
@@ -67,11 +70,11 @@ class SearchFragment : Fragment(), OnItemClickedListener {
 
     // todo: find out how to do this properly and find a better name for this method
     private fun initConnection() {
-
-    }
-
-    private fun initConnectionRetrofit() {
-
+        movieController.searchMovies("legend", object: ServerResponseListener {
+            override fun getResult(results: List<Movie>) {
+                adapter.setMovies(results)
+            }
+        })
     }
 
     private fun initSearchBarListener(): TextWatcher {
