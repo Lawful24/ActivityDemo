@@ -1,7 +1,7 @@
 package com.appplanet.activitydemo.network.api
 
 import com.appplanet.activitydemo.BuildConfig
-import com.appplanet.activitydemo.network.model.MovieResults
+import com.appplanet.activitydemo.network.model.MovieResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -11,5 +11,5 @@ interface TmdbService {
 
     fun getMoviesFromQuery(
         @Query("api_key") apiKey: String = BuildConfig.MOVIE_API_KEY
-    ): Call<MovieResults>
+    ): Call<MovieResponse>
 }
