@@ -13,6 +13,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.appplanet.activitydemo.network.api.TmdbService
+import com.appplanet.activitydemo.network.model.Movie
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import retrofit2.Retrofit
 import java.io.InputStream
 import java.util.Timer
 import java.util.TimerTask
@@ -37,16 +42,36 @@ class SearchFragment : Fragment(), OnItemClickedListener {
         importJson()
         val movies = MovieResultsFactory.getMovieResults()!!.results
 
+        // establish connection with server
+
         view.findViewById<EditText>(R.id.search_bar).addTextChangedListener(initSearchBarListener())
 
-        // recyclerView declaration
-        recyclerView = view.findViewById(R.id.recycler_view)
-        recyclerView.apply {
-            layoutManager = LinearLayoutManager(activity)
-            setHasFixedSize(true)
+        // get text from the EditText
+
+        // should pass a list to the adapter:
+        // val moviesFromQuery
+
+        initRecyclerView(view, movies)
+    }
+
+    private fun importJson() {
+        val importThread = Thread {
+            val assetManager: AssetManager = requireActivity().assets
+            val inputStream: InputStream = assetManager.open("results.json")
+            jsonText = inputStream.bufferedReader().use {
+                it.readText()
+            }
         }
-        recyclerView.adapter = MessageAdapter(movies, this)
-        recyclerTextView = view.findViewById(R.id.card_title)
+        importThread.start()
+    }
+
+    // todo: find out how to do this properly and find a better name for this method
+    private fun initConnection() {
+
+    }
+
+    private fun initConnectionRetrofit() {
+
     }
 
     private fun initSearchBarListener(): TextWatcher {
@@ -79,15 +104,14 @@ class SearchFragment : Fragment(), OnItemClickedListener {
         }
     }
 
-    private fun importJson() {
-        val importThread = Thread {
-            val assetManager: AssetManager = requireActivity().assets
-            val inputStream: InputStream = assetManager.open("results.json")
-            jsonText = inputStream.bufferedReader().use {
-                it.readText()
-            }
+    private fun initRecyclerView(v: View, movies: List<Movie>) {
+        recyclerView = v.findViewById(R.id.recycler_view)
+        recyclerView.apply {
+            layoutManager = LinearLayoutManager(activity)
+            setHasFixedSize(true)
         }
-        importThread.start()
+        recyclerView.adapter = MessageAdapter(movies, this)
+        recyclerTextView = v.findViewById(R.id.card_title)
     }
 
     override fun onItemClicked(item: Movie) {

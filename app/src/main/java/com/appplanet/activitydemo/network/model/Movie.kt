@@ -1,4 +1,4 @@
-package com.appplanet.activitydemo
+package com.appplanet.activitydemo.network.model
 
 import android.os.Parcelable
 import com.squareup.moshi.Json

@@ -1,5 +1,7 @@
 package com.appplanet.activitydemo
 
+import com.appplanet.activitydemo.network.model.Movie
+import com.appplanet.activitydemo.network.model.MovieResults
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 

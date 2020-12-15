@@ -10,8 +10,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Log.d("Hidden Key", BuildConfig.MOVIE_API_KEY)
-
         val transaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.fragment_container, SearchFragment())
         transaction.commit()

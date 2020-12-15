@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.appplanet.activitydemo.network.model.Movie
 import kotlinx.android.synthetic.main.card_layout.view.card_title
 
 class MessageAdapter(
