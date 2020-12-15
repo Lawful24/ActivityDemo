@@ -1,24 +1,32 @@
 package com.appplanet.activitydemo.network.controller
 
 import android.util.Log
+import com.appplanet.activitydemo.BuildConfig
 import com.appplanet.activitydemo.network.ServerResponseListener
 import com.appplanet.activitydemo.network.model.MovieResponse
 import com.appplanet.activitydemo.network.api.TmdbService
+import com.squareup.moshi.Moshi
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 class MovieController {
 
     fun searchMovies(query: String, listener: ServerResponseListener) {
+        val moshi = Moshi.Builder().build()
+
         val retrofit = Retrofit.Builder()
             .baseUrl("https://api.themoviedb.org/3/")
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .client(OkHttpClient())
             .build()
 
         val tmdbService = retrofit.create(TmdbService::class.java)
 
-        tmdbService.getMoviesFromQuery().enqueue(object: Callback<MovieResponse> {
+        tmdbService.getMoviesFromQuery(BuildConfig.MOVIE_API_KEY, query).enqueue(object: Callback<MovieResponse> {
             override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
                 val movieResponse = response.body()
                 val movieListFromResponse = movieResponse!!.results // todo: do research on safe and non-null asserted calls

@@ -17,6 +17,7 @@ import com.appplanet.activitydemo.network.ServerResponseListener
 import com.appplanet.activitydemo.network.controller.MovieController
 import com.appplanet.activitydemo.network.model.Movie
 import java.io.InputStream
+import java.util.Collections
 import java.util.Timer
 import java.util.TimerTask
 
@@ -24,22 +25,26 @@ var jsonText: String = ""
 
 class SearchFragment : Fragment(), OnItemClickedListener {
 
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var recyclerView: RecyclerView // is lateinit okay?
     private var recyclerTextView: TextView? = null
-    private lateinit var movieController: MovieController   // is lateinit okay?
+    private lateinit var movieController: MovieController
     private lateinit var adapter: MessageAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View =
-        inflater.inflate(R.layout.fragment_search, container, false)
+    ): View {
+        movieController = MovieController()
+        adapter = MessageAdapter(Collections.emptyList(), this)
+        return inflater.inflate(R.layout.fragment_search, container, false)
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        importJson()
+        initConnection()
         val movies = MovieResultsFactory.getMovieResults()!!.results
 
         // establish connection with server
@@ -70,7 +75,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
 
     // todo: find out how to do this properly and find a better name for this method
     private fun initConnection() {
-        movieController.searchMovies("legend", object: ServerResponseListener {
+        movieController.searchMovies("anything", object : ServerResponseListener {
             override fun getResult(results: List<Movie>) {
                 adapter.setMovies(results)
             }
