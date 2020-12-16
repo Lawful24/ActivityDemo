@@ -28,7 +28,6 @@ class SearchFragment : Fragment(), OnItemClickedListener {
     private lateinit var recyclerView: RecyclerView // is lateinit okay?
     private var recyclerTextView: TextView? = null
     private lateinit var movieController: MovieController
-    private lateinit var adapter: MessageAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +35,6 @@ class SearchFragment : Fragment(), OnItemClickedListener {
         savedInstanceState: Bundle?
     ): View {
         movieController = MovieController()
-        adapter = MessageAdapter(Collections.emptyList(), this)
         return inflater.inflate(R.layout.fragment_search, container, false)
     }
 
@@ -44,13 +42,11 @@ class SearchFragment : Fragment(), OnItemClickedListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initConnection()
-        val movies = MovieResultsFactory.getMovieResults()!!.results
-
         // establish connection with server
 
         view.findViewById<EditText>(R.id.search_bar).addTextChangedListener(initSearchBarListener())
 
+        //initConnection()
         // get text from the EditText
 
         // send query to server
@@ -59,7 +55,8 @@ class SearchFragment : Fragment(), OnItemClickedListener {
 
         // pass the movie list to the adapter
 
-        initRecyclerView(view, movies)
+        initRecyclerView(view)  // todo: put the results list here
+                                // list does not appear
     }
 
     private fun importJson() {
@@ -71,15 +68,6 @@ class SearchFragment : Fragment(), OnItemClickedListener {
             }
         }
         importThread.start()
-    }
-
-    // todo: find out how to do this properly and find a better name for this method
-    private fun initConnection() {
-        movieController.searchMovies("anything", object : ServerResponseListener {
-            override fun getResult(results: List<Movie>) {
-                adapter.setMovies(results)
-            }
-        })
     }
 
     private fun initSearchBarListener(): TextWatcher {
@@ -112,12 +100,20 @@ class SearchFragment : Fragment(), OnItemClickedListener {
         }
     }
 
-    private fun initRecyclerView(v: View, movies: List<Movie>) {
+    private fun initRecyclerView(v: View) {
         recyclerView = v.findViewById(R.id.recycler_view)
         recyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
             setHasFixedSize(true)
         }
+
+        var movies = Collections.emptyList<Movie>() // temporary solution for testing
+        movieController.searchMovies("Three Billboards Outside Ebbing Missouri", object : ServerResponseListener {
+            override fun getResult(results: List<Movie>) {
+                movies = results // todo: we get the response from the server, but the posterpath can be null
+            }
+        })
+
         recyclerView.adapter = MessageAdapter(movies, this)
         recyclerTextView = v.findViewById(R.id.card_title)
     }
