@@ -7,11 +7,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.appplanet.activitydemo.network.model.Movie
 import kotlinx.android.synthetic.main.card_layout.view.card_title
+import java.util.Collections
 
 class MessageAdapter(
-    private var movieList: List<Movie>,
     private val onItemClickedListener: OnItemClickedListener
 ) : RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
+
+    private var movieList = Collections.emptyList<Movie>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.card_layout, parent, false)

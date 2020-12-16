@@ -1,6 +1,5 @@
 package com.appplanet.activitydemo
 
-import android.content.res.AssetManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -16,12 +15,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.appplanet.activitydemo.network.ServerResponseListener
 import com.appplanet.activitydemo.network.controller.MovieController
 import com.appplanet.activitydemo.network.model.Movie
-import java.io.InputStream
 import java.util.Collections
 import java.util.Timer
 import java.util.TimerTask
 
-var jsonText: String = ""
+lateinit var movies: List<Movie> // temporary solution
 
 class SearchFragment : Fragment(), OnItemClickedListener {
 
@@ -41,32 +39,13 @@ class SearchFragment : Fragment(), OnItemClickedListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // establish connection with server
-
         view.findViewById<EditText>(R.id.search_bar).addTextChangedListener(initSearchBarListener())
 
-        //initConnection()
         // get text from the EditText
 
-        // send query to server
+        movies = getMoviesFromServer("anything")
 
-        // get response
-
-        // pass the movie list to the adapter
-
-        initRecyclerView(view)  // todo: put the results list here
-    }
-
-    private fun importJson() {
-        val importThread = Thread {
-            val assetManager: AssetManager = requireActivity().assets
-            val inputStream: InputStream = assetManager.open("results.json")
-            jsonText = inputStream.bufferedReader().use {
-                it.readText()
-            }
-        }
-        importThread.start()
+        initRecyclerView(view, movies)
     }
 
     private fun initSearchBarListener(): TextWatcher {
@@ -99,23 +78,29 @@ class SearchFragment : Fragment(), OnItemClickedListener {
         }
     }
 
-    private fun initRecyclerView(v: View) {
+    private fun initRecyclerView(v: View, movies: List<Movie>) {
         recyclerView = v.findViewById(R.id.recycler_view)
         recyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
             setHasFixedSize(true)
         }
 
-        var movies = Collections.emptyList<Movie>() // temporary solution for testing
-        movieController.searchMovies("anything", object : ServerResponseListener {
-            override fun getResult(results: List<Movie>) {
-                movies = results // todo: we get the response from the server, but the posterpath can be null
-            }
-        })
-        val adapter = MessageAdapter(movies, this)
+        // pass the movie list to the adapter
+        val adapter = MessageAdapter(this)
         adapter.setMovies(movies)
         recyclerView.adapter = adapter
         recyclerTextView = v.findViewById(R.id.card_title) // todo: y no display?
+    }
+
+    private fun getMoviesFromServer(query: String): List<Movie> {
+        var movies = Collections.emptyList<Movie>()
+
+        movieController.searchMovies(query, object : ServerResponseListener {
+            override fun getResult(results: List<Movie>) {
+                movies = results
+            }
+        })
+        return movies
     }
 
     override fun onItemClicked(item: Movie) {

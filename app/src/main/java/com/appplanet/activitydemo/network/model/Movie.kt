@@ -14,7 +14,7 @@ data class Movie(
     @Json(name = "poster_path") var _posterPath: String?,
     @Json(name = "id") val id: Int,
     @Json(name = "adult") val adult: Boolean,
-    @Json(name = "backdrop_path") val backdropPath: String?,
+    @Json(name = "backdrop_path") var _backdropPath: String?,
     @Json(name = "original_language") val originalLang: String,
     @Json(name = "original_title") val originalTitle: String,
     @Json(name = "genre_ids") val genreList: Array<Int>,
@@ -24,11 +24,17 @@ data class Movie(
     @Json(name = "release_date") val releaseDate: String
 ) : Parcelable {
 
-    // Accessor to modify a potential null value in response
+    // Getters and setters to modify a potential null value in response
 
     var posterPath: String
         get() = _posterPath ?: ""
         set(value) {
             _posterPath = value
+        }
+
+    var backdropPath: String
+        get() = _backdropPath ?: ""
+        set(value) {
+            _backdropPath = value
         }
 }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.appplanet.activitydemo.network.model.Movie
 import kotlinx.android.synthetic.main.fragment_movie_details.view.textView
 
 const val MOVIE_ID_KEY: String = "We live in a twilight world"
@@ -19,9 +20,19 @@ class MovieDetailsFragment : Fragment() {
 
         val movieId = arguments!!.getInt(MOVIE_ID_KEY)
 
-        rootView.textView.text = MovieResultsFactory.findMovieById(movieId).title
+        rootView.textView.text = findMovieById(movies, movieId).title
 
         return rootView
+    }
+
+    private fun findMovieById(movies: List<Movie>, movieId: Int): Movie {
+        var index = 0
+        while (index < movies.size && movieId != movies[index].id) {
+            if (movieId != movies[index].id) {
+                index++
+            }
+        }
+        return movies[index]
     }
 
     companion object {
