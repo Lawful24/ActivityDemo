@@ -56,7 +56,6 @@ class SearchFragment : Fragment(), OnItemClickedListener {
         // pass the movie list to the adapter
 
         initRecyclerView(view)  // todo: put the results list here
-                                // list does not appear
     }
 
     private fun importJson() {
@@ -108,14 +107,15 @@ class SearchFragment : Fragment(), OnItemClickedListener {
         }
 
         var movies = Collections.emptyList<Movie>() // temporary solution for testing
-        movieController.searchMovies("Three Billboards Outside Ebbing Missouri", object : ServerResponseListener {
+        movieController.searchMovies("anything", object : ServerResponseListener {
             override fun getResult(results: List<Movie>) {
                 movies = results // todo: we get the response from the server, but the posterpath can be null
             }
         })
-
-        recyclerView.adapter = MessageAdapter(movies, this)
-        recyclerTextView = v.findViewById(R.id.card_title)
+        val adapter = MessageAdapter(movies, this)
+        adapter.setMovies(movies)
+        recyclerView.adapter = adapter
+        recyclerTextView = v.findViewById(R.id.card_title) // todo: y no display?
     }
 
     override fun onItemClicked(item: Movie) {
