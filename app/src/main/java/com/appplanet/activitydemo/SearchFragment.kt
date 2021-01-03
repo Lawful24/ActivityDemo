@@ -26,6 +26,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
     private lateinit var recyclerView: RecyclerView // is lateinit okay?
     private var recyclerTextView: TextView? = null
     private lateinit var movieController: MovieController
+    private lateinit var adapter: MessageAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,15 +37,23 @@ class SearchFragment : Fragment(), OnItemClickedListener {
         return inflater.inflate(R.layout.fragment_search, container, false)
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         view.findViewById<EditText>(R.id.search_bar).addTextChangedListener(initSearchBarListener())
 
-        // get text from the EditText
+        // gets text from the EditText
+        // todo: actually write it
+        val query = "avengers"
+        movies = Collections.emptyList()
 
-        movies = getMoviesFromServer("anything")
+        // makes api call on a background thread
+        makeApiCallOnNewThread(query)
 
+        // adapter declaration
+        adapter = MessageAdapter(movies, this)
+
+        // initializes the RecyclerView
         initRecyclerView(view, movies)
     }
 
@@ -78,6 +87,17 @@ class SearchFragment : Fragment(), OnItemClickedListener {
         }
     }
 
+    private fun makeApiCallOnNewThread(query: String) {
+        val apiThread = Thread {
+            movieController.searchMovies(query, object : ServerResponseListener {
+                override fun getResult(results: List<Movie>) {
+                    adapter.setMovies(results)
+                }
+            })
+        }
+        apiThread.run()
+    }
+
     private fun initRecyclerView(v: View, movies: List<Movie>) {
         recyclerView = v.findViewById(R.id.recycler_view)
         recyclerView.apply {
@@ -86,21 +106,8 @@ class SearchFragment : Fragment(), OnItemClickedListener {
         }
 
         // pass the movie list to the adapter
-        val adapter = MessageAdapter(this)
-        adapter.setMovies(movies)
         recyclerView.adapter = adapter
-        recyclerTextView = v.findViewById(R.id.card_title) // todo: y no display?
-    }
-
-    private fun getMoviesFromServer(query: String): List<Movie> {
-        var movies = Collections.emptyList<Movie>()
-
-        movieController.searchMovies(query, object : ServerResponseListener {
-            override fun getResult(results: List<Movie>) {
-                movies = results
-            }
-        })
-        return movies
+        recyclerTextView = v.findViewById(R.id.card_title)
     }
 
     override fun onItemClicked(item: Movie) {

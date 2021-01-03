@@ -7,14 +7,11 @@ import com.appplanet.activitydemo.network.model.MovieResponse
 import com.appplanet.activitydemo.network.api.TmdbService
 import com.squareup.moshi.Moshi
 import okhttp3.OkHttpClient
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
-import retrofit2.Converter
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.lang.reflect.Type
 
 class MovieController {
 

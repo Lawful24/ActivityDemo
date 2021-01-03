@@ -20,12 +20,12 @@ class MovieDetailsFragment : Fragment() {
 
         val movieId = arguments!!.getInt(MOVIE_ID_KEY)
 
-        rootView.textView.text = findMovieById(movies, movieId).title
+        rootView.textView.text = findMovieById(movies, movieId).title // not like this
 
         return rootView
     }
 
-    private fun findMovieById(movies: List<Movie>, movieId: Int): Movie {
+    private fun findMovieById(movies: List<Movie>, movieId: Int): Movie { // todo: filter
         var index = 0
         while (index < movies.size && movieId != movies[index].id) {
             if (movieId != movies[index].id) {
