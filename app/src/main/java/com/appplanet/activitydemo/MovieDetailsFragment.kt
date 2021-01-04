@@ -5,16 +5,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.appplanet.activitydemo.databinding.FragmentMovieDetailsBinding
 import com.appplanet.activitydemo.network.model.Movie
 import kotlinx.android.synthetic.main.fragment_movie_details.view.textView
 
 class MovieDetailsFragment : Fragment() {
+
+    // initialise view binding
+    private var _binding: FragmentMovieDetailsBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val rootView = inflater.inflate(R.layout.fragment_movie_details, container, false)
+        _binding = FragmentMovieDetailsBinding.inflate(inflater, container, false)
+        val rootView = binding.root
 
         val movie: Movie? by lazy { arguments?.getParcelable("movie") as Movie? }
 

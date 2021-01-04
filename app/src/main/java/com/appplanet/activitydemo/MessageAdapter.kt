@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.appplanet.activitydemo.network.model.Movie
-import kotlinx.android.synthetic.main.card_layout.view.card_title
 
 class MessageAdapter(
     private var movieList: List<Movie>,
@@ -34,7 +33,7 @@ class MessageAdapter(
 
     class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val cardText: TextView = itemView.card_title
+        val cardText: TextView = itemView.findViewById(R.id.card_title)
 
         fun setData(message: String?) {
             cardText.text = message
