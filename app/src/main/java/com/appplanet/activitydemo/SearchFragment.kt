@@ -19,8 +19,6 @@ import java.util.Collections
 import java.util.Timer
 import java.util.TimerTask
 
-lateinit var movies: List<Movie> // temporary solution
-
 class SearchFragment : Fragment(), OnItemClickedListener {
 
     private lateinit var recyclerView: RecyclerView // is lateinit okay?
@@ -45,7 +43,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
         // gets text from the EditText
         // todo: actually write it
         val query = "avengers"
-        movies = Collections.emptyList()
+        val movies = Collections.emptyList<Movie>()
 
         // makes api call on a background thread
         makeApiCallOnNewThread(query)
@@ -111,7 +109,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
     }
 
     override fun onItemClicked(item: Movie) {
-        val movieFragment = MovieDetailsFragment.getInstance(item.id)
+        val movieFragment = MovieDetailsFragment.getInstance(item)
 
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.run {

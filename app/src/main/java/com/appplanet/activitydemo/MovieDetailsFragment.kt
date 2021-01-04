@@ -8,8 +8,6 @@ import androidx.fragment.app.Fragment
 import com.appplanet.activitydemo.network.model.Movie
 import kotlinx.android.synthetic.main.fragment_movie_details.view.textView
 
-const val MOVIE_ID_KEY: String = "We live in a twilight world"
-
 class MovieDetailsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -18,27 +16,17 @@ class MovieDetailsFragment : Fragment() {
     ): View {
         val rootView = inflater.inflate(R.layout.fragment_movie_details, container, false)
 
-        val movieId = arguments!!.getInt(MOVIE_ID_KEY)
+        val movie: Movie? by lazy { arguments?.getParcelable("movie") as Movie? }
 
-        rootView.textView.text = findMovieById(movies, movieId).title // not like this
+        rootView.textView.text = movie?.title // still safe assertion
 
         return rootView
     }
 
-    private fun findMovieById(movies: List<Movie>, movieId: Int): Movie { // todo: filter
-        var index = 0
-        while (index < movies.size && movieId != movies[index].id) {
-            if (movieId != movies[index].id) {
-                index++
-            }
-        }
-        return movies[index]
-    }
-
     companion object {
-        fun getInstance(movieId: Int): MovieDetailsFragment {
+        fun getInstance(clickedItem: Movie): MovieDetailsFragment {
             val args = Bundle()
-            args.putInt(MOVIE_ID_KEY, movieId)
+            args.putParcelable("movie", clickedItem)
             val fragment = MovieDetailsFragment()
             fragment.arguments = args
             return fragment
