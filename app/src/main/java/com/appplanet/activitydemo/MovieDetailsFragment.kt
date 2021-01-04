@@ -9,6 +9,8 @@ import com.appplanet.activitydemo.databinding.FragmentMovieDetailsBinding
 import com.appplanet.activitydemo.network.model.Movie
 import kotlinx.android.synthetic.main.fragment_movie_details.view.textView
 
+const val MOVIE_PARCELABLE_KEY = "movie_key"
+
 class MovieDetailsFragment : Fragment() {
 
     // initialise view binding
@@ -23,7 +25,7 @@ class MovieDetailsFragment : Fragment() {
         _binding = FragmentMovieDetailsBinding.inflate(inflater, container, false)
         val rootView = binding.root
 
-        val movie: Movie? by lazy { arguments?.getParcelable("movie") as Movie? }
+        val movie: Movie? by lazy { arguments?.getParcelable(MOVIE_PARCELABLE_KEY) as Movie? }
 
         rootView.textView.text = movie?.title // still safe assertion
 
@@ -33,7 +35,7 @@ class MovieDetailsFragment : Fragment() {
     companion object {
         fun getInstance(clickedItem: Movie): MovieDetailsFragment {
             val args = Bundle()
-            args.putParcelable("movie", clickedItem)
+            args.putParcelable(MOVIE_PARCELABLE_KEY, clickedItem)
             val fragment = MovieDetailsFragment()
             fragment.arguments = args
             return fragment
