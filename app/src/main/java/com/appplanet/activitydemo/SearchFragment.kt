@@ -15,13 +15,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.appplanet.activitydemo.network.ServerResponseListener
 import com.appplanet.activitydemo.network.controller.MovieController
 import com.appplanet.activitydemo.network.model.Movie
+import kotlinx.android.synthetic.main.fragment_search.search_bar
 import java.util.Collections
 import java.util.Timer
 import java.util.TimerTask
 
 class SearchFragment : Fragment(), OnItemClickedListener {
 
-    private lateinit var recyclerView: RecyclerView // is lateinit okay?
+    private lateinit var recyclerView: RecyclerView
     private var recyclerTextView: TextView? = null
     private lateinit var movieController: MovieController
     private lateinit var adapter: MessageAdapter
@@ -38,21 +39,14 @@ class SearchFragment : Fragment(), OnItemClickedListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // initialises the search bar EditText
         view.findViewById<EditText>(R.id.search_bar).addTextChangedListener(initSearchBarListener())
 
-        // gets text from the EditText
-        // todo: actually write it
-        val query = "avengers"
-        val movies = Collections.emptyList<Movie>()
-
-        // makes api call on a background thread
-        makeApiCallOnNewThread(query)
-
         // adapter declaration
-        adapter = MessageAdapter(movies, this)
+        adapter = MessageAdapter(Collections.emptyList<Movie>(), this)
 
         // initializes the RecyclerView
-        initRecyclerView(view, movies)
+        initRecyclerView(view)  // no list parameter because the list will be updated anyway
     }
 
     private fun initSearchBarListener(): TextWatcher {
@@ -70,6 +64,14 @@ class SearchFragment : Fragment(), OnItemClickedListener {
                             requireActivity().runOnUiThread(Runnable {
                                 Toast.makeText(context, s, duration).show()
                             })
+
+                            // makes api call on a background thread
+                            if (search_bar.text.isNotEmpty()) {
+
+                                // gets text from EditText
+                                makeApiCallOnNewThread(search_bar.text.toString())
+                            }
+
                         }
                     }, delayMs)
                 }
@@ -96,7 +98,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
         apiThread.run()
     }
 
-    private fun initRecyclerView(v: View, movies: List<Movie>) {
+    private fun initRecyclerView(v: View) {
         recyclerView = v.findViewById(R.id.recycler_view)
         recyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
