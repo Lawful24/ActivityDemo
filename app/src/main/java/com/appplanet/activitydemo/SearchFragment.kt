@@ -6,7 +6,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -24,11 +23,11 @@ import java.util.TimerTask
 class SearchFragment : Fragment(), OnItemClickedListener {
 
     // initialise view binding
-    private var _binding: FragmentSearchBinding? = null
-    private val binding get() = _binding!!
+    private var binding: FragmentSearchBinding? = null
 
     private lateinit var recyclerView: RecyclerView
     private var recyclerTextView: TextView? = null
+
     private lateinit var movieController: MovieController
     private lateinit var adapter: MessageAdapter
 
@@ -38,22 +37,23 @@ class SearchFragment : Fragment(), OnItemClickedListener {
         savedInstanceState: Bundle?
     ): View {
 
-        // controller declaration
-        movieController = MovieController()
-
-        // adapter declaration
-        adapter = MessageAdapter(emptyList(), this)
-
         // view binding
-        _binding = FragmentSearchBinding.inflate(inflater, container, false)
-        return binding.root
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding!!.apply {
+
+            // controller declaration
+            movieController = MovieController()
+
+            // adapter declaration
+            adapter = MessageAdapter(emptyList(), this@SearchFragment)
+        }.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         // initialises the search bar EditText
-        binding.searchBar.addTextChangedListener(initSearchBarListener())
+        binding!!.searchBar.addTextChangedListener(initSearchBarListener())
 
         // initializes the RecyclerView
         initRecyclerView()
@@ -109,7 +109,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
     }
 
     private fun initRecyclerView() {
-        recyclerView = binding.recyclerView
+        recyclerView = binding!!.recyclerView
         recyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
             setHasFixedSize(true)
@@ -117,7 +117,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
 
         // pass the movie list to the adapter
         recyclerView.adapter = adapter
-        recyclerTextView = binding.root.card_title
+        recyclerTextView = binding!!.root.card_title
     }
 
     override fun onItemClicked(item: Movie) {

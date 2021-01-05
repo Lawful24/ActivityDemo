@@ -14,22 +14,19 @@ const val MOVIE_PARCELABLE_KEY = "movie_key"
 class MovieDetailsFragment : Fragment() {
 
     // initialise view binding
-    private var _binding: FragmentMovieDetailsBinding? = null
-    private val binding get() = _binding!!
+    private var binding: FragmentMovieDetailsBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMovieDetailsBinding.inflate(inflater, container, false)
-        val rootView = binding.root
+        binding = FragmentMovieDetailsBinding.inflate(inflater, container, false)
 
-        val movie: Movie? by lazy { arguments?.getParcelable(MOVIE_PARCELABLE_KEY) as Movie? }
-
-        rootView.textView.text = movie?.title // still safe assertion
-
-        return rootView
+        return binding!!.apply {
+            val movie: Movie? by lazy { arguments?.getParcelable(MOVIE_PARCELABLE_KEY) as Movie? }
+            this.root.textView.text = movie?.title
+        }.root
     }
 
     companion object {
