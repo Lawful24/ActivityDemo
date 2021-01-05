@@ -10,8 +10,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         // initialise view binding
-        val binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(ActivityMainBinding.inflate(layoutInflater).root)
 
         val transaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.fragment_container, SearchFragment())

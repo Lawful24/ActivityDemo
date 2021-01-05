@@ -16,7 +16,7 @@ import com.appplanet.activitydemo.network.ServerResponseListener
 import com.appplanet.activitydemo.network.controller.MovieController
 import com.appplanet.activitydemo.network.model.Movie
 import kotlinx.android.synthetic.main.card_layout.view.card_title
-import kotlinx.android.synthetic.main.fragment_search.search_bar
+import kotlinx.android.synthetic.main.fragment_search.view.search_bar
 import java.util.Timer
 import java.util.TimerTask
 
@@ -63,7 +63,6 @@ class SearchFragment : Fragment(), OnItemClickedListener {
         return object : TextWatcher {
             private var timer: Timer = Timer()
             private val delayMs = 500L
-            private val duration: Int = Toast.LENGTH_SHORT
 
             override fun afterTextChanged(s: Editable) {
                 timer.cancel()
@@ -71,17 +70,13 @@ class SearchFragment : Fragment(), OnItemClickedListener {
                 if (s.isNotEmpty()) {
                     timer.schedule(object : TimerTask() {
                         override fun run() {
-                            requireActivity().runOnUiThread(Runnable {
-                                Toast.makeText(context, s, duration).show()
-                            })
 
                             // makes api call on a background thread
-                            if (search_bar.text.isNotEmpty()) {
+                            if (binding!!.root.search_bar.text.isNotEmpty()) {
 
                                 // gets text from EditText
-                                makeApiCallOnNewThread(search_bar.text.toString())
+                                makeApiCallOnNewThread(binding!!.root.search_bar.text.toString())
                             }
-
                         }
                     }, delayMs)
                 }
@@ -100,8 +95,14 @@ class SearchFragment : Fragment(), OnItemClickedListener {
     private fun makeApiCallOnNewThread(query: String) {
         val apiThread = Thread {
             movieController.searchMovies(query, object : ServerResponseListener {
-                override fun getResult(results: List<Movie>) {
-                    adapter.setMovies(results)
+                override fun getResult(results: List<Movie>?) {
+                    if (results != null) {
+                        adapter.setMovies(results)
+                    } else {
+                        requireActivity().runOnUiThread(Runnable {
+                            Toast.makeText(context, "An error has occurred.", Toast.LENGTH_LONG).show()
+                        })
+                    }
                 }
             })
         }

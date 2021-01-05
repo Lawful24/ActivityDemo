@@ -34,13 +34,13 @@ class MovieController {
                 ) {
                     val movieResponse = response.body()
                     val movieListFromResponse =
-                        movieResponse!!.results // todo: do research on safe and non-null asserted calls
+                        movieResponse?.results // todo: do research on safe and non-null asserted calls
                     listener.getResult(movieListFromResponse)
                     // called the interface after the response was handled
                 }
 
-                override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
-                    Log.e(MovieController::class.java.simpleName, t.message)
+                override fun onFailure(call: Call<MovieResponse>, throwable: Throwable) {
+                    Log.e(MovieController::class.java.simpleName, throwable.message)
                 }
             })
     }
