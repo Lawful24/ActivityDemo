@@ -15,18 +15,38 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 class MovieController {
 
+    val moshi = Moshi.Builder().build()
+
+    val retrofit = Retrofit.Builder()
+        .baseUrl("https://api.themoviedb.org/3/")
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .client(OkHttpClient())
+        .build()
+
+    val tmdbService = retrofit.create(TmdbService::class.java)
+
     fun searchMovies(query: String, listener: ServerResponseListener) {
-        val moshi = Moshi.Builder().build()
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://api.themoviedb.org/3/")
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .client(OkHttpClient())
-            .build()
-
-        val tmdbService = retrofit.create(TmdbService::class.java)
-
         tmdbService.getMoviesFromQuery(BuildConfig.MOVIE_API_KEY, query)
+            .enqueue(object : Callback<MovieResponse> {
+                override fun onResponse(
+                    call: Call<MovieResponse>,
+                    response: Response<MovieResponse>
+                ) {
+                    val movieResponse = response.body()
+                    val movieListFromResponse =
+                        movieResponse?.results
+                    listener.getResult(movieListFromResponse)
+                    // called the interface after the response was handled
+                }
+
+                override fun onFailure(call: Call<MovieResponse>, throwable: Throwable) {
+                    Log.e(MovieController::class.java.simpleName, throwable.message)
+                }
+            })
+    }
+
+    fun getMostPopularMovies(listener: ServerResponseListener) {
+        tmdbService.getMostPopularMovies(BuildConfig.MOVIE_API_KEY)
             .enqueue(object : Callback<MovieResponse> {
                 override fun onResponse(
                     call: Call<MovieResponse>,

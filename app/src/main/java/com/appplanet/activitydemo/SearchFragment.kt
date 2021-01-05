@@ -46,6 +46,12 @@ class SearchFragment : Fragment(), OnItemClickedListener {
 
             // adapter declaration
             adapter = MessageAdapter(emptyList(), this@SearchFragment)
+
+            // when the search bar has no text inside, the most popular movies are listed
+            // condition check just in case
+            if (viewBinding!!.searchBar.text.isEmpty()) {
+                mostPopularMoviesCall()
+            }
         }.root
     }
 
@@ -75,24 +81,36 @@ class SearchFragment : Fragment(), OnItemClickedListener {
                             if (viewBinding!!.root.search_bar.text.isNotEmpty()) {
 
                                 // gets text from EditText
-                                makeApiCallOnNewThread(viewBinding!!.root.search_bar.text.toString())
+                                searchMoviesCall(viewBinding!!.root.search_bar.text.toString())
                             }
                         }
                     }, delayMs)
+                } else {
+                    mostPopularMoviesCall()
                 }
             }
 
-            override fun beforeTextChanged(sequence: CharSequence, start: Int, count: Int, after: Int) {
+            override fun beforeTextChanged(
+                sequence: CharSequence,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
                 // no-op
             }
 
-            override fun onTextChanged(sequence: CharSequence, start: Int, before: Int, count: Int) {
+            override fun onTextChanged(
+                sequence: CharSequence,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
                 // no-op
             }
         }
     }
 
-    private fun makeApiCallOnNewThread(query: String) {
+    private fun searchMoviesCall(query: String) {
         val apiThread = Thread {
             movieController.searchMovies(query, object : ServerResponseListener {
                 override fun getResult(results: List<Movie>?) {
@@ -100,7 +118,27 @@ class SearchFragment : Fragment(), OnItemClickedListener {
                         adapter.setMoviesList(results)
                     } else {
                         requireActivity().runOnUiThread(Runnable {
-                            Toast.makeText(context, "An error has occurred.", Toast.LENGTH_LONG)
+                            Toast.makeText(context, "No results found.", Toast.LENGTH_LONG)
+                                .show()
+                        })
+                    }
+                }
+            })
+        }
+        apiThread.run()
+    }
+
+    private fun mostPopularMoviesCall() {
+        val apiThread = Thread {
+            movieController.getMostPopularMovies(object : ServerResponseListener {
+                override fun getResult(results: List<Movie>?) {
+                    if (results != null) {
+                        adapter.setMoviesList(results)
+                    } else {
+
+                        // this can only occur when the connection between the device and the server
+                        requireActivity().runOnUiThread(Runnable {
+                            Toast.makeText(context, "An error had occurred.", Toast.LENGTH_LONG)
                                 .show()
                         })
                     }
@@ -122,8 +160,10 @@ class SearchFragment : Fragment(), OnItemClickedListener {
         recyclerTextView = viewBinding!!.root.card_title
     }
 
-    override fun onItemClicked(listItem: Movie) {
-        val movieFragment = MovieDetailsFragment.getInstance(listItem)
+    override fun onItemClicked(recyclerViewItem: Movie) {
+
+
+        val movieFragment = MovieDetailsFragment.getInstance(recyclerViewItem)
 
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.run {
@@ -135,5 +175,5 @@ class SearchFragment : Fragment(), OnItemClickedListener {
 }
 
 interface OnItemClickedListener {
-    fun onItemClicked(item: Movie)
+    fun onItemClicked(recyclerViewItem: Movie)
 }
