@@ -13,19 +13,19 @@ class MessageAdapter(
 ) : RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.card_layout, parent, false)
-
-        return MessageViewHolder(view)
+        return MessageViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.card_layout, parent, false)
+        )
     }
 
-    override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
+    override fun onBindViewHolder(viewHolder: MessageViewHolder, position: Int) {
         val movieListElement = movieList[position]
 
-        holder.cardText.setOnClickListener {
+        viewHolder.cardText.setOnClickListener {
             onItemClickedListener.onItemClicked(movieListElement)
         }
 
-        holder.setData(movieListElement.title)
+        viewHolder.setDetailsFragmentData(movieListElement.title)
     }
 
 
@@ -35,13 +35,13 @@ class MessageAdapter(
 
         val cardText: TextView = itemView.findViewById(R.id.card_title)
 
-        fun setData(message: String?) {
+        fun setDetailsFragmentData(message: String?) {
             cardText.text = message
         }
     }
 
-    fun setMovies(movies: List<Movie>) {
-        movieList = movies
+    fun setMoviesList(newMovieList: List<Movie>) {
+        movieList = newMovieList
         notifyDataSetChanged()  // notifies the RecyclerView about the movieList being modified
     }
 }

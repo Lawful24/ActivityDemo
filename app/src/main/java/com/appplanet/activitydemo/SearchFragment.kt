@@ -23,7 +23,7 @@ import java.util.TimerTask
 class SearchFragment : Fragment(), OnItemClickedListener {
 
     // initialise view binding
-    private var binding: FragmentSearchBinding? = null
+    private var viewBinding: FragmentSearchBinding? = null
 
     private lateinit var recyclerView: RecyclerView
     private var recyclerTextView: TextView? = null
@@ -38,8 +38,8 @@ class SearchFragment : Fragment(), OnItemClickedListener {
     ): View {
 
         // view binding
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
-        return binding!!.apply {
+        viewBinding = FragmentSearchBinding.inflate(inflater, container, false)
+        return viewBinding!!.apply {
 
             // controller declaration
             movieController = MovieController()
@@ -53,7 +53,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
         super.onViewCreated(view, savedInstanceState)
 
         // initialises the search bar EditText
-        binding!!.searchBar.addTextChangedListener(initSearchBarListener())
+        viewBinding!!.searchBar.addTextChangedListener(initSearchBarListener())
 
         // initializes the RecyclerView
         initRecyclerView()
@@ -64,29 +64,29 @@ class SearchFragment : Fragment(), OnItemClickedListener {
             private var timer: Timer = Timer()
             private val delayMs = 500L
 
-            override fun afterTextChanged(s: Editable) {
+            override fun afterTextChanged(searchBarText: Editable) {
                 timer.cancel()
                 timer = Timer()
-                if (s.isNotEmpty()) {
+                if (searchBarText.isNotEmpty()) {
                     timer.schedule(object : TimerTask() {
                         override fun run() {
 
                             // makes api call on a background thread
-                            if (binding!!.root.search_bar.text.isNotEmpty()) {
+                            if (viewBinding!!.root.search_bar.text.isNotEmpty()) {
 
                                 // gets text from EditText
-                                makeApiCallOnNewThread(binding!!.root.search_bar.text.toString())
+                                makeApiCallOnNewThread(viewBinding!!.root.search_bar.text.toString())
                             }
                         }
                     }, delayMs)
                 }
             }
 
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+            override fun beforeTextChanged(sequence: CharSequence, start: Int, count: Int, after: Int) {
                 // no-op
             }
 
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            override fun onTextChanged(sequence: CharSequence, start: Int, before: Int, count: Int) {
                 // no-op
             }
         }
@@ -97,10 +97,11 @@ class SearchFragment : Fragment(), OnItemClickedListener {
             movieController.searchMovies(query, object : ServerResponseListener {
                 override fun getResult(results: List<Movie>?) {
                     if (results != null) {
-                        adapter.setMovies(results)
+                        adapter.setMoviesList(results)
                     } else {
                         requireActivity().runOnUiThread(Runnable {
-                            Toast.makeText(context, "An error has occurred.", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, "An error has occurred.", Toast.LENGTH_LONG)
+                                .show()
                         })
                     }
                 }
@@ -110,7 +111,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
     }
 
     private fun initRecyclerView() {
-        recyclerView = binding!!.recyclerView
+        recyclerView = viewBinding!!.recyclerView
         recyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
             setHasFixedSize(true)
@@ -118,11 +119,11 @@ class SearchFragment : Fragment(), OnItemClickedListener {
 
         // pass the movie list to the adapter
         recyclerView.adapter = adapter
-        recyclerTextView = binding!!.root.card_title
+        recyclerTextView = viewBinding!!.root.card_title
     }
 
-    override fun onItemClicked(item: Movie) {
-        val movieFragment = MovieDetailsFragment.getInstance(item)
+    override fun onItemClicked(listItem: Movie) {
+        val movieFragment = MovieDetailsFragment.getInstance(listItem)
 
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.run {

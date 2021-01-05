@@ -34,7 +34,7 @@ class MovieController {
                 ) {
                     val movieResponse = response.body()
                     val movieListFromResponse =
-                        movieResponse?.results // todo: do research on safe and non-null asserted calls
+                        movieResponse?.results
                     listener.getResult(movieListFromResponse)
                     // called the interface after the response was handled
                 }
