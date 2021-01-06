@@ -6,10 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.appplanet.activitydemo.databinding.FragmentMovieDetailsBinding
-import com.appplanet.activitydemo.network.ServerResponseListener2
+import com.appplanet.activitydemo.network.ServerResponseListener
 import com.appplanet.activitydemo.network.controller.MovieController
 import com.appplanet.activitydemo.network.model.Movie
-import com.appplanet.activitydemo.network.model.MovieDetailed
 import kotlinx.android.synthetic.main.fragment_movie_details.view.textView
 
 const val MOVIE_PARCELABLE_KEY = "movie_key"
@@ -28,17 +27,15 @@ class MovieDetailsFragment : Fragment() {
 
         return viewBinding!!.apply {
 
-            var textFromMovieCall: String? = ""
-
             val apiThread = Thread {
                 MovieController().getMovieById(
                     arguments?.getInt(MOVIE_PARCELABLE_KEY),
-                    object : ServerResponseListener2 {
-                        override fun getMovieDetailedResult(result: MovieDetailed?) {
-                            textFromMovieCall = result?.title
-                            viewBinding!!.root.textView.text = textFromMovieCall
+                    object : ServerResponseListener<Movie?> {
+                        override fun getResult(result: Movie?) {
+                            viewBinding!!.root.textView.text = result?.title
                         }
-                    })
+                    }
+                )
             }
             apiThread.run()
         }.root

@@ -3,10 +3,9 @@ package com.appplanet.activitydemo.network.controller
 import android.util.Log
 import com.appplanet.activitydemo.BuildConfig
 import com.appplanet.activitydemo.network.ServerResponseListener
-import com.appplanet.activitydemo.network.ServerResponseListener2
 import com.appplanet.activitydemo.network.model.MovieResponse
 import com.appplanet.activitydemo.network.api.TmdbService
-import com.appplanet.activitydemo.network.model.MovieDetailed
+import com.appplanet.activitydemo.network.model.Movie
 import com.squareup.moshi.Moshi
 import okhttp3.OkHttpClient
 import retrofit2.Call
@@ -27,7 +26,7 @@ class MovieController {
 
     val tmdbService = retrofit.create(TmdbService::class.java)
 
-    fun searchMovies(query: String, listener: ServerResponseListener) {
+    fun searchMovies(query: String, listener: ServerResponseListener<List<Movie>?>) {
         tmdbService.getMoviesFromQuery(BuildConfig.MOVIE_API_KEY, query)
             .enqueue(object : Callback<MovieResponse> {
                 override fun onResponse(
@@ -44,7 +43,7 @@ class MovieController {
             })
     }
 
-    fun getMostPopularMovies(listener: ServerResponseListener) {
+    fun getMostPopularMovies(listener: ServerResponseListener<List<Movie>?>) {
         tmdbService.getMostPopularMovies(BuildConfig.MOVIE_API_KEY)
             .enqueue(object : Callback<MovieResponse> {
                 override fun onResponse(
@@ -61,18 +60,18 @@ class MovieController {
             })
     }
 
-    fun getMovieById(movieId: Int?, listener: ServerResponseListener2) {
+    fun getMovieById(movieId: Int?, listener: ServerResponseListener<Movie>) {
         tmdbService.getMovieById(movieId, BuildConfig.MOVIE_API_KEY)
-            .enqueue(object : Callback<MovieDetailed> {
+            .enqueue(object : Callback<Movie> {
                 override fun onResponse(
-                    call: Call<MovieDetailed>,
-                    response: Response<MovieDetailed>
+                    call: Call<Movie>,
+                    response: Response<Movie>
                 ) {
-                    listener.getMovieDetailedResult(response.body())
+                    listener.getResult(response.body())
                     // called the interface after the response was handled
                 }
 
-                override fun onFailure(call: Call<MovieDetailed>, throwable: Throwable) {
+                override fun onFailure(call: Call<Movie>, throwable: Throwable) {
                     Log.e(MovieController::class.java.simpleName, throwable.message)
                 }
             })

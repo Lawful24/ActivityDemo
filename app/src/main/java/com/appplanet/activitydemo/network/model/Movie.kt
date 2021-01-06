@@ -17,7 +17,7 @@ data class Movie(
     @Json(name = "backdrop_path") val backdropPath: String?,
     @Json(name = "original_language") val originalLang: String,
     @Json(name = "original_title") val originalTitle: String,
-    @Json(name = "genre_ids") val genreList: List<Int>,
+    @Json(name = "genre_ids") val genreList: List<Int>?,
     @Json(name = "title") val title: String,
     @Json(name = "vote_average") val voteAverage: Double,
     @Json(name = "overview") val overview: String,

@@ -112,10 +112,10 @@ class SearchFragment : Fragment(), OnItemClickedListener {
 
     private fun searchMoviesCall(query: String) {
         val apiThread = Thread {
-            movieController.searchMovies(query, object : ServerResponseListener {
-                override fun getResult(results: List<Movie>?) {
-                    if (results != null) {
-                        adapter.setMoviesList(results)
+            movieController.searchMovies(query, object : ServerResponseListener<List<Movie>?> {
+                override fun getResult(result: List<Movie>?) {
+                    if (result != null) {
+                        adapter.setMoviesList(result)
                     } else {
                         requireActivity().runOnUiThread(Runnable {
                             Toast.makeText(context, "No results found.", Toast.LENGTH_LONG)
@@ -130,10 +130,10 @@ class SearchFragment : Fragment(), OnItemClickedListener {
 
     private fun mostPopularMoviesCall() {
         val apiThread = Thread {
-            movieController.getMostPopularMovies(object : ServerResponseListener {
-                override fun getResult(results: List<Movie>?) {
-                    if (results != null) {
-                        adapter.setMoviesList(results)
+            movieController.getMostPopularMovies(object : ServerResponseListener<List<Movie>?> {
+                override fun getResult(result: List<Movie>?) {
+                    if (result != null) {
+                        adapter.setMoviesList(result)
                     } else {
 
                         // this can only occur when the connection between the device and the server
