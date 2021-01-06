@@ -6,7 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.appplanet.activitydemo.databinding.FragmentMovieDetailsBinding
+import com.appplanet.activitydemo.network.ServerResponseListener2
+import com.appplanet.activitydemo.network.controller.MovieController
 import com.appplanet.activitydemo.network.model.Movie
+import com.appplanet.activitydemo.network.model.MovieDetailed
 import kotlinx.android.synthetic.main.fragment_movie_details.view.textView
 
 const val MOVIE_PARCELABLE_KEY = "movie_key"
@@ -24,19 +27,27 @@ class MovieDetailsFragment : Fragment() {
         viewBinding = FragmentMovieDetailsBinding.inflate(inflater, container, false)
 
         return viewBinding!!.apply {
-            val movieFromSearchFragment: Movie? by lazy {
-                arguments?.getParcelable(
-                    MOVIE_PARCELABLE_KEY
-                ) as Movie?
+
+            var textFromMovieCall: String? = ""
+
+            val apiThread = Thread {
+                MovieController().getMovieById(
+                    arguments?.getInt(MOVIE_PARCELABLE_KEY),
+                    object : ServerResponseListener2 {
+                        override fun getMovieDetailedResult(result: MovieDetailed?) {
+                            textFromMovieCall = result?.title
+                            viewBinding!!.root.textView.text = textFromMovieCall
+                        }
+                    })
             }
-            this.root.textView.text = movieFromSearchFragment?.title
+            apiThread.run()
         }.root
     }
 
     companion object {
         fun getInstance(clickedItem: Movie): MovieDetailsFragment {
             val args = Bundle()
-            args.putParcelable(MOVIE_PARCELABLE_KEY, clickedItem)
+            args.putInt(MOVIE_PARCELABLE_KEY, clickedItem.id)
             val fragment = MovieDetailsFragment()
             fragment.arguments = args
             return fragment
