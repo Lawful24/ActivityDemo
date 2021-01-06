@@ -3,8 +3,10 @@ package com.appplanet.activitydemo.network.controller
 import android.util.Log
 import com.appplanet.activitydemo.BuildConfig
 import com.appplanet.activitydemo.network.ServerResponseListener
+import com.appplanet.activitydemo.network.ServerResponseListener2
 import com.appplanet.activitydemo.network.model.MovieResponse
 import com.appplanet.activitydemo.network.api.TmdbService
+import com.appplanet.activitydemo.network.model.MovieDetailed
 import com.squareup.moshi.Moshi
 import okhttp3.OkHttpClient
 import retrofit2.Call
@@ -54,6 +56,23 @@ class MovieController {
                 }
 
                 override fun onFailure(call: Call<MovieResponse>, throwable: Throwable) {
+                    Log.e(MovieController::class.java.simpleName, throwable.message)
+                }
+            })
+    }
+
+    fun getMovieById(movieId: Int?, listener: ServerResponseListener2) {
+        tmdbService.getMovieById(movieId, BuildConfig.MOVIE_API_KEY)
+            .enqueue(object : Callback<MovieDetailed> {
+                override fun onResponse(
+                    call: Call<MovieDetailed>,
+                    response: Response<MovieDetailed>
+                ) {
+                    listener.getMovieDetailedResult(response.body())
+                    // called the interface after the response was handled
+                }
+
+                override fun onFailure(call: Call<MovieDetailed>, throwable: Throwable) {
                     Log.e(MovieController::class.java.simpleName, throwable.message)
                 }
             })
