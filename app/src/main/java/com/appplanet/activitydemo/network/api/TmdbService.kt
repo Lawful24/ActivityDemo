@@ -18,4 +18,9 @@ interface TmdbService {
     fun getMostPopularMovies(
         @Query("api_key") apiKey: String
     ): Call<MovieResponse>
+
+    @GET("movie/{movie_id}")
+    fun getMovieById(
+        @Query("api_key") apiKey: String
+    ): Call<MovieResponse>
 }
