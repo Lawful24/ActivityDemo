@@ -161,8 +161,6 @@ class SearchFragment : Fragment(), OnItemClickedListener {
     }
 
     override fun onItemClicked(recyclerViewItem: Movie) {
-
-
         val movieFragment = MovieDetailsFragment.getInstance(recyclerViewItem)
 
         val transaction = requireActivity().supportFragmentManager.beginTransaction()

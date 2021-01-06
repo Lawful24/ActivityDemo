@@ -23,7 +23,7 @@ data class MovieDetailed(
     @Json(name = "release_date") val releaseDate: String,
 
     // details
-    @Json(name = "belongs_to_collection") val belongsToCollection: String?, // type?
+    @Json(name = "belongs_to_collection") val belongsToCollection: MovieCollection?, // type?
     @Json(name = "budget") val budget: Int,
     @Json(name = "genres") val genres: List<Genre>,
     @Json(name = "homepage") val homepage: String?,

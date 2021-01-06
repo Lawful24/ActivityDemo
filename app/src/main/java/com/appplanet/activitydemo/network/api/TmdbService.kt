@@ -1,8 +1,10 @@
 package com.appplanet.activitydemo.network.api
 
+import com.appplanet.activitydemo.network.model.MovieDetailed
 import com.appplanet.activitydemo.network.model.MovieResponse
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface TmdbService {
@@ -21,6 +23,7 @@ interface TmdbService {
 
     @GET("movie/{movie_id}")
     fun getMovieById(
+        @Path("movie_id") movieId: Int?,
         @Query("api_key") apiKey: String
-    ): Call<MovieResponse>
+    ): Call<MovieDetailed>
 }

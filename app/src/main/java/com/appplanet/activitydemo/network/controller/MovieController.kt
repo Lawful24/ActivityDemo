@@ -32,10 +32,7 @@ class MovieController {
                     call: Call<MovieResponse>,
                     response: Response<MovieResponse>
                 ) {
-                    val movieResponse = response.body()
-                    val movieListFromResponse =
-                        movieResponse?.results
-                    listener.getResult(movieListFromResponse)
+                    listener.getResult(response.body()?.results)
                     // called the interface after the response was handled
                 }
 
@@ -52,10 +49,7 @@ class MovieController {
                     call: Call<MovieResponse>,
                     response: Response<MovieResponse>
                 ) {
-                    val movieResponse = response.body()
-                    val movieListFromResponse =
-                        movieResponse?.results
-                    listener.getResult(movieListFromResponse)
+                    listener.getResult(response.body()?.results)
                     // called the interface after the response was handled
                 }
 
