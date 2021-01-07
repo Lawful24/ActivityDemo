@@ -12,6 +12,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 class MovieController {
@@ -21,6 +22,7 @@ class MovieController {
     val retrofit = Retrofit.Builder()
         .baseUrl("https://api.themoviedb.org/3/")
         .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .client(OkHttpClient())
         .build()
 

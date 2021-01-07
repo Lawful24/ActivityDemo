@@ -2,6 +2,7 @@ package com.appplanet.activitydemo.network.api
 
 import com.appplanet.activitydemo.network.model.Movie
 import com.appplanet.activitydemo.network.model.MovieResponse
+import io.reactivex.Single
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -14,16 +15,16 @@ interface TmdbService {
     fun getMoviesFromQuery(
         @Query("api_key") apiKey: String,
         @Query("query") query: String
-    ): Call<MovieResponse>
+    ): Single<MovieResponse>
 
     @GET("movie/popular")
     fun getMostPopularMovies(
         @Query("api_key") apiKey: String
-    ): Call<MovieResponse>
+    ): Single<MovieResponse>
 
     @GET("movie/{movie_id}")
     fun getMovieById(
         @Path("movie_id") movieId: Int?,
         @Query("api_key") apiKey: String
-    ): Call<Movie>
+    ): Single<Movie>
 }
