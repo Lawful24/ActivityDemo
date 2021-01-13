@@ -33,6 +33,16 @@ class SearchFragment : Fragment(), OnItemClickedListener {
 
     private val disposables = CompositeDisposable()
 
+    override fun onStart() {
+        super.onStart()
+        mostPopularMoviesCall()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        disposables.clear()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -48,13 +58,6 @@ class SearchFragment : Fragment(), OnItemClickedListener {
 
             // adapter declaration
             adapter = MessageAdapter(emptyList(), this@SearchFragment)
-
-            // when the search bar has no text inside, the most popular movies are listed
-            // condition check just in case
-            if (viewBinding!!.searchBar.text.isEmpty()) {
-                //disposables.add()
-                mostPopularMoviesCall()
-            }
         }.root
     }
 
@@ -114,36 +117,43 @@ class SearchFragment : Fragment(), OnItemClickedListener {
     }
 
     private fun searchMoviesCall(query: String) {
-        movieController.searchMovies(query)
-            .doOnSuccess {
-                if (it.results.isNotEmpty()) {
-                    adapter.setMoviesList(it.results)
-                } else {
+        disposables.add(
+            movieController.searchMovies(query)
+                .doOnSuccess {
+                    if (it.results.isNotEmpty()) {
+                        adapter.setMoviesList(it.results)
+                    } else {
+                        requireActivity().runOnUiThread(Runnable {
+                            Toast.makeText(context, "No results found.", Toast.LENGTH_LONG)
+                                .show()
+                        })
+                    }
+                }
+                .doOnError {
                     requireActivity().runOnUiThread(Runnable {
-                        Toast.makeText(context, "No results found.", Toast.LENGTH_LONG)
+                        Toast.makeText(context, "An error had occurred.", Toast.LENGTH_LONG)
                             .show()
                     })
                 }
-            }
-
-            .doOnError {
-                Toast.makeText(context, "error", Toast.LENGTH_LONG).show()
-            }
-            .subscribe()
+                .subscribe()
+        )
     }
 
     private fun mostPopularMoviesCall() {
-        movieController.getMostPopularMovies()
-            .doOnSuccess {
-                adapter.setMoviesList(it.results) // assuming that we always have a filled list here
-            }
-            .doOnError {
-                requireActivity().runOnUiThread(Runnable {
-                    Toast.makeText(context, "An error had occurred.", Toast.LENGTH_LONG)
-                        .show()
-                })
-            }
-            .subscribe()
+        disposables.add(
+            movieController.getMostPopularMovies()
+                .doOnSuccess {
+                    // assuming that we always have a filled list here
+                    adapter.setMoviesList(it.results)
+                }
+                .doOnError {
+                    requireActivity().runOnUiThread(Runnable {
+                        Toast.makeText(context, "An error had occurred.", Toast.LENGTH_LONG)
+                            .show()
+                    })
+                }
+                .subscribe()
+        )
     }
 
     private fun initRecyclerView() {
