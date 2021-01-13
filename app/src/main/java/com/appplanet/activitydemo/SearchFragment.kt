@@ -12,9 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.appplanet.activitydemo.databinding.FragmentSearchBinding
-import com.appplanet.activitydemo.network.ServerResponseListener
 import com.appplanet.activitydemo.network.controller.MovieController
 import com.appplanet.activitydemo.network.model.Movie
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.card_layout.view.card_title
 import kotlinx.android.synthetic.main.fragment_search.view.search_bar
 import java.util.Timer
@@ -30,6 +30,8 @@ class SearchFragment : Fragment(), OnItemClickedListener {
 
     private lateinit var movieController: MovieController
     private lateinit var adapter: MessageAdapter
+
+    private val disposables = CompositeDisposable()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,6 +52,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
             // when the search bar has no text inside, the most popular movies are listed
             // condition check just in case
             if (viewBinding!!.searchBar.text.isEmpty()) {
+                //disposables.add()
                 mostPopularMoviesCall()
             }
         }.root
@@ -111,41 +114,36 @@ class SearchFragment : Fragment(), OnItemClickedListener {
     }
 
     private fun searchMoviesCall(query: String) {
-        val apiThread = Thread {
-            movieController.searchMovies(query, object : ServerResponseListener<List<Movie>?> {
-                override fun getResult(result: List<Movie>?) {
-                    if (result != null) {
-                        adapter.setMoviesList(result)
-                    } else {
-                        requireActivity().runOnUiThread(Runnable {
-                            Toast.makeText(context, "No results found.", Toast.LENGTH_LONG)
-                                .show()
-                        })
-                    }
+        movieController.searchMovies(query)
+            .doOnSuccess {
+                if (it.results.isNotEmpty()) {
+                    adapter.setMoviesList(it.results)
+                } else {
+                    requireActivity().runOnUiThread(Runnable {
+                        Toast.makeText(context, "No results found.", Toast.LENGTH_LONG)
+                            .show()
+                    })
                 }
-            })
-        }
-        apiThread.run()
+            }
+
+            .doOnError {
+                Toast.makeText(context, "error", Toast.LENGTH_LONG).show()
+            }
+            .subscribe()
     }
 
     private fun mostPopularMoviesCall() {
-        val apiThread = Thread {
-            movieController.getMostPopularMovies(object : ServerResponseListener<List<Movie>?> {
-                override fun getResult(result: List<Movie>?) {
-                    if (result != null) {
-                        adapter.setMoviesList(result)
-                    } else {
-
-                        // this can only occur when the connection between the device and the server
-                        requireActivity().runOnUiThread(Runnable {
-                            Toast.makeText(context, "An error had occurred.", Toast.LENGTH_LONG)
-                                .show()
-                        })
-                    }
-                }
-            })
-        }
-        apiThread.run()
+        movieController.getMostPopularMovies()
+            .doOnSuccess {
+                adapter.setMoviesList(it.results) // assuming that we always have a filled list here
+            }
+            .doOnError {
+                requireActivity().runOnUiThread(Runnable {
+                    Toast.makeText(context, "An error had occurred.", Toast.LENGTH_LONG)
+                        .show()
+                })
+            }
+            .subscribe()
     }
 
     private fun initRecyclerView() {
