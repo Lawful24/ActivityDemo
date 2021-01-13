@@ -15,16 +15,16 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 class MovieController {
 
-    val moshi = Moshi.Builder().build()
+    private val moshi = Moshi.Builder().build()
 
-    val retrofit = Retrofit.Builder()
+    private val retrofit = Retrofit.Builder()
         .baseUrl("https://api.themoviedb.org/3/")
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .client(OkHttpClient())
         .build()
 
-    val tmdbService = retrofit.create(TmdbService::class.java)
+    private val tmdbService = retrofit.create(TmdbService::class.java)
 
     fun searchMovies(query: String): Single<MovieResponse> =
         tmdbService.getMoviesFromQuery(BuildConfig.MOVIE_API_KEY, query)
