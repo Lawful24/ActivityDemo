@@ -33,7 +33,8 @@ class SearchFragment : Fragment(), OnItemClickedListener {
     private lateinit var movieController: MovieController
     private lateinit var adapter: MessageAdapter
 
-    private val disposables = CompositeDisposable()
+    private val onViewCreatedDisposables = CompositeDisposable()
+    private val onStartDisposables = CompositeDisposable()
     private lateinit var searchDisposable: Disposable
     private lateinit var popularDisposable: Disposable
 
@@ -69,20 +70,19 @@ class SearchFragment : Fragment(), OnItemClickedListener {
         super.onStart()
 
         // subscribe to the most popular movies stream
-        popularDisposable = mostPopularMoviesCall()
-        disposables.add(popularDisposable)
+        onStartDisposables.add(mostPopularMoviesCall())
     }
 
     override fun onStop() {
         // unsubscribe from the popular stream
-        disposables.remove(popularDisposable)
+        onStartDisposables.clear()
 
         super.onStop()
     }
 
     override fun onDestroyView() {
         // unsubscribe from the search stream
-        disposables.clear()
+        onViewCreatedDisposables.clear()
 
         super.onDestroyView()
     }
@@ -101,10 +101,8 @@ class SearchFragment : Fragment(), OnItemClickedListener {
 
                             // makes api call on a background thread
                             if (viewBinding!!.root.search_bar.text.isNotEmpty()) {
-                                searchDisposable =
+                                onViewCreatedDisposables.add(
                                     searchMoviesCall(viewBinding!!.root.search_bar.text.toString())
-                                disposables.add(
-                                    searchDisposable
                                 )
                             }
                         }
