@@ -1,28 +1,17 @@
 package com.appplanet.activitydemo.network.controller
 
 import com.appplanet.activitydemo.BuildConfig
+import com.appplanet.activitydemo.network.NetworkSingleton
 import com.appplanet.activitydemo.network.api.TmdbService
 import com.appplanet.activitydemo.network.model.Movie
 import com.appplanet.activitydemo.network.model.MovieResponse
-import com.squareup.moshi.Moshi
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.moshi.MoshiConverterFactory
 
 class MovieController {
 
-    private val moshi = Moshi.Builder().build()
-
-    private val retrofit = Retrofit.Builder()
-        .baseUrl("https://api.themoviedb.org/3/")
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
-        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-        .client(OkHttpClient())
-        .build()
+    private val retrofit = NetworkSingleton.retrofit
 
     private val tmdbService = retrofit.create(TmdbService::class.java)
 
