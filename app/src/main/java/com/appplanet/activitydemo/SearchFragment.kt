@@ -37,21 +37,6 @@ class SearchFragment : Fragment(), OnItemClickedListener {
     private lateinit var searchDisposable: Disposable
     private lateinit var popularDisposable: Disposable
 
-    override fun onStart() {
-        super.onStart()
-
-        // subscribe to the most popular movies stream
-        popularDisposable = mostPopularMoviesCall()
-        disposables.add(popularDisposable)
-    }
-
-    override fun onStop() {
-        // unsubscribe from the popular stream
-        disposables.remove(popularDisposable)
-
-        super.onStop()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -78,6 +63,21 @@ class SearchFragment : Fragment(), OnItemClickedListener {
 
         // initializes the RecyclerView
         initRecyclerView()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        // subscribe to the most popular movies stream
+        popularDisposable = mostPopularMoviesCall()
+        disposables.add(popularDisposable)
+    }
+
+    override fun onStop() {
+        // unsubscribe from the popular stream
+        disposables.remove(popularDisposable)
+
+        super.onStop()
     }
 
     override fun onDestroyView() {

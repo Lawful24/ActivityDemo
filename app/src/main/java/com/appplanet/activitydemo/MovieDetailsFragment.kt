@@ -23,6 +23,15 @@ class MovieDetailsFragment : Fragment() {
 
     private val disposables = CompositeDisposable()
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        viewBinding = FragmentMovieDetailsBinding.inflate(inflater, container, false)
+        return viewBinding!!.root
+    }
+
     override fun onStart() {
         super.onStart()
 
@@ -33,15 +42,6 @@ class MovieDetailsFragment : Fragment() {
         disposables.clear()
 
         super.onStop()
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        viewBinding = FragmentMovieDetailsBinding.inflate(inflater, container, false)
-        return viewBinding!!.root
     }
 
     private fun fetchMovieById(movieId: Int?): Disposable {
