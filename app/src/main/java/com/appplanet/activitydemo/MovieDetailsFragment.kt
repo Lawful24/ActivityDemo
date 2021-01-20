@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.appplanet.activitydemo.databinding.FragmentMovieDetailsBinding
 import com.appplanet.activitydemo.network.controller.MovieController
 import com.appplanet.activitydemo.network.model.Movie
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_movie_details.view.textView
@@ -45,6 +46,7 @@ class MovieDetailsFragment : Fragment() {
 
     private fun fetchMovieById(movieId: Int?): Disposable {
         return MovieController().getMovieById(movieId)
+            .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess {
                 viewBinding!!.root.textView.text = it.title
             }

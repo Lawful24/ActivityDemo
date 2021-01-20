@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.appplanet.activitydemo.databinding.FragmentSearchBinding
 import com.appplanet.activitydemo.network.controller.MovieController
 import com.appplanet.activitydemo.network.model.Movie
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.card_layout.view.card_title
@@ -135,6 +136,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
 
     private fun searchMoviesCall(query: String): Disposable {
         return movieController.searchMovies(query)
+            .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess {
                 if (it.results.isNotEmpty()) {
                     adapter.setMoviesList(it.results)
@@ -156,6 +158,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
 
     private fun mostPopularMoviesCall(): Disposable {
         return movieController.getMostPopularMovies()
+            .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess {
                 if (it.results.isNotEmpty()) {
                     adapter.setMoviesList(it.results)
