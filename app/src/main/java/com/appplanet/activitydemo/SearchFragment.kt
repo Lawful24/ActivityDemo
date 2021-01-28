@@ -1,8 +1,6 @@
 package com.appplanet.activitydemo
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,13 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.appplanet.activitydemo.databinding.FragmentSearchBinding
 import com.appplanet.activitydemo.network.controller.MovieController
 import com.appplanet.activitydemo.network.model.Movie
+import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.card_layout.view.card_title
-import kotlinx.android.synthetic.main.fragment_search.view.search_bar
-import java.util.Timer
-import java.util.TimerTask
+import kotlinx.android.synthetic.main.fragment_search.search_bar
+import java.util.concurrent.TimeUnit
 
 class SearchFragment : Fragment(), OnItemClickedListener {
 
@@ -35,8 +33,6 @@ class SearchFragment : Fragment(), OnItemClickedListener {
 
     private val onViewCreatedDisposables = CompositeDisposable()
     private val onStartDisposables = CompositeDisposable()
-    private lateinit var searchDisposable: Disposable
-    private lateinit var popularDisposable: Disposable
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,7 +56,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
         super.onViewCreated(view, savedInstanceState)
 
         // initialises the search bar EditText
-        viewBinding!!.searchBar.addTextChangedListener(initSearchBarListener())
+        initSearchBarStream()
 
         // initializes the RecyclerView
         initRecyclerView()
@@ -87,49 +83,23 @@ class SearchFragment : Fragment(), OnItemClickedListener {
         super.onDestroyView()
     }
 
-    private fun initSearchBarListener(): TextWatcher {
-        return object : TextWatcher {
-            private var timer: Timer = Timer()
-            private val delayMs = 500L
-
-            override fun afterTextChanged(searchBarText: Editable) {
-                timer.cancel()
-                timer = Timer()
-                if (searchBarText.isNotEmpty()) {
-                    timer.schedule(object : TimerTask() {
-                        override fun run() {
-
-                            // makes api call on a background thread
-                            if (viewBinding!!.root.search_bar.text.isNotEmpty()) {
-                                onViewCreatedDisposables.add(
-                                    searchMoviesCall(viewBinding!!.root.search_bar.text.toString())
-                                )
-                            }
-                        }
-                    }, delayMs)
-                } else {
-                    mostPopularMoviesCall()
+    private fun initSearchBarStream() {
+        onViewCreatedDisposables.add(
+            RxTextView.afterTextChangeEvents(search_bar)
+                .map {
+                    it.view().text.toString()
                 }
-            }
+                .debounce(500, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
 
-            override fun beforeTextChanged(
-                sequence: CharSequence,
-                start: Int,
-                count: Int,
-                after: Int
-            ) {
-                // no-op
-            }
-
-            override fun onTextChanged(
-                sequence: CharSequence,
-                start: Int,
-                before: Int,
-                count: Int
-            ) {
-                // no-op
-            }
-        }
+                .subscribe {
+                    if (it.isNotEmpty()) {
+                        onViewCreatedDisposables.add(searchMoviesCall(it))
+                    } else {
+                        mostPopularMoviesCall()
+                    }
+                }
+        )
     }
 
     private fun searchMoviesCall(query: String): Disposable {
