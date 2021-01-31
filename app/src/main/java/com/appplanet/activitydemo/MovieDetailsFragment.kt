@@ -1,6 +1,7 @@
 package com.appplanet.activitydemo
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,10 +17,14 @@ import kotlinx.android.synthetic.main.fragment_movie_details.view.textView
 
 const val MOVIE_PARCELABLE_KEY = "movie_key"
 
+
 class MovieDetailsFragment : Fragment() {
+
+    private val TAG = "MovieDetailsFragment"
 
     // initialise view binding
     private var viewBinding: FragmentMovieDetailsBinding? = null
+    private lateinit var movieController: MovieController
 
     private val disposables = CompositeDisposable()
 
@@ -29,13 +34,18 @@ class MovieDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         viewBinding = FragmentMovieDetailsBinding.inflate(inflater, container, false)
-        return viewBinding!!.root
+        return viewBinding!!.apply {
+
+            // controller declaration
+            movieController = MovieController()
+        }.root
     }
 
     override fun onStart() {
         super.onStart()
 
         disposables.add(fetchMovieById(arguments?.getInt(MOVIE_PARCELABLE_KEY)))
+        disposables.add(fetchMovieVideosById(arguments?.getInt(MOVIE_PARCELABLE_KEY)))
     }
 
     override fun onStop() {
@@ -55,6 +65,22 @@ class MovieDetailsFragment : Fragment() {
                     Toast.makeText(context, "Unable to load movie.", Toast.LENGTH_LONG)
                         .show()
                 })
+            }
+            .subscribe()
+    }
+
+    private fun fetchMovieVideosById(movieId: Int?): Disposable {
+        return movieController.getMovieVideosById(movieId)
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSuccess {
+                if (it.results.isNotEmpty()) {
+                    Log.i(TAG, "OK")
+                } else {
+                    Log.i(TAG, "NOT FOUND")
+                }
+            }
+            .doOnError {
+                Log.e(TAG, "ERROR FETCHING VIDEOS")
             }
             .subscribe()
     }
