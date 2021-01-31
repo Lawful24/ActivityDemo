@@ -41,17 +41,17 @@ class MovieDetailsFragment : Fragment() {
         }.root
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         disposables.add(fetchMovieById(arguments?.getInt(MOVIE_PARCELABLE_KEY)))
         disposables.add(fetchMovieVideosById(arguments?.getInt(MOVIE_PARCELABLE_KEY)))
     }
 
-    override fun onStop() {
+    override fun onDestroyView() {
         disposables.clear()
 
-        super.onStop()
+        super.onDestroyView()
     }
 
     private fun fetchMovieById(movieId: Int?): Disposable {
