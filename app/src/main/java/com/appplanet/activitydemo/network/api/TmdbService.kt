@@ -2,6 +2,7 @@ package com.appplanet.activitydemo.network.api
 
 import com.appplanet.activitydemo.network.model.Movie
 import com.appplanet.activitydemo.network.model.MovieResponse
+import com.appplanet.activitydemo.network.model.MovieVideoResponse
 import io.reactivex.Single
 import retrofit2.Call
 import retrofit2.http.GET
@@ -27,4 +28,10 @@ interface TmdbService {
         @Path("movie_id") movieId: Int?,
         @Query("api_key") apiKey: String
     ): Single<Movie>
+
+    @GET("movie/{movie_id}/videos")
+    fun getMovieVideosById(
+        @Path("movie_id") movieId: Int?,
+        @Query("api_key") apiKey: String
+    ): Single<MovieVideoResponse>
 }
