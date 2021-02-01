@@ -3,4 +3,5 @@
     <string name="hint_text">Enter a message…</string>
     <string name="default_message">Loading…</string>
     <string name="recyclerview_text">dummy text</string>
+    <string name="video_button_text">Go to video</string>
 </resources>

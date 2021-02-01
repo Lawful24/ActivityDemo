@@ -1,5 +1,7 @@
 package com.appplanet.activitydemo
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +16,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_movie_details.view.textView
+import kotlinx.android.synthetic.main.fragment_movie_details.view.video_button
 
 const val MOVIE_PARCELABLE_KEY = "movie_key"
 
@@ -55,7 +58,7 @@ class MovieDetailsFragment : Fragment() {
     }
 
     private fun fetchMovieById(movieId: Int?): Disposable {
-        return MovieController().getMovieById(movieId)
+        return movieController.getMovieById(movieId)
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess {
                 viewBinding!!.root.textView.text = it.title
@@ -75,8 +78,34 @@ class MovieDetailsFragment : Fragment() {
             .doOnSuccess {
                 if (it.results.isNotEmpty()) {
                     Log.i(TAG, "OK")
+
+                    var firstElementSite = it.results[0].site
+                    val firstElementKey = it.results[0].key
+
+                    if (firstElementSite == "YouTube") {
+                        firstElementSite = "https://www.youtube.com/watch?v="
+                    } else if (firstElementSite == "Vimeo") {
+                        firstElementSite = "https://vimeo.com/"
+                    }
+
+                    viewBinding!!.root.video_button.setOnClickListener {
+                        startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse(firstElementSite + firstElementKey)
+                            )
+                        )
+                    }
                 } else {
                     Log.i(TAG, "NOT FOUND")
+
+                    viewBinding!!.root.video_button.setOnClickListener {
+                        Toast.makeText(
+                            context,
+                            "There are no videos for this movie.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             }
             .doOnError {
