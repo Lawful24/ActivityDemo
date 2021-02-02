@@ -11,6 +11,10 @@
         style="@style/BottomSheetItem"
         android:drawableStart="@drawable/ic_email_24px"
         android:text="@string/share_email"
+        android:background="?android:attr/selectableItemBackground"
+        android:focusable="true"
+        android:clickable="true"
+        android:gravity="center|start"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -20,6 +24,10 @@
         style="@style/BottomSheetItem"
         android:drawableStart="@drawable/ic_more_horiz_black_18dp"
         android:text="@string/options"
+        android:background="?android:attr/selectableItemBackground"
+        android:focusable="true"
+        android:clickable="true"
+        android:gravity="center|start"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_share_via_email" />
