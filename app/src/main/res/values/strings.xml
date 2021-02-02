@@ -4,4 +4,7 @@
     <string name="default_message">Loading…</string>
     <string name="recyclerview_text">dummy text</string>
     <string name="video_button_text">Go to video</string>
+    <string name="share_email">Share via email</string>
+    <string name="options">Other options</string>
+    <string name="share_button">Share</string>
 </resources>

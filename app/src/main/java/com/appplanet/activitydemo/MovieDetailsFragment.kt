@@ -16,6 +16,7 @@ import com.appplanet.activitydemo.network.model.Movie
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import kotlinx.android.synthetic.main.fragment_movie_details.view.bottom_sheet_button
 import kotlinx.android.synthetic.main.fragment_movie_details.view.textView
 import kotlinx.android.synthetic.main.fragment_movie_details.view.video_button
 
@@ -49,6 +50,8 @@ class MovieDetailsFragment : Fragment() {
 
             // controller declaration
             movieController = MovieController()
+
+            initBottomSheetButton()
         }.root
     }
 
@@ -138,6 +141,16 @@ class MovieDetailsFragment : Fragment() {
                 Log.e(TAG, "ERROR FETCHING VIDEOS")
             }
             .subscribe()
+    }
+
+    private fun initBottomSheetButton() {
+        viewBinding!!.root.bottom_sheet_button.setOnClickListener {
+            requireActivity().supportFragmentManager.let {
+                MovieDetailsBottomSheetFragment.newInstance(Bundle()).apply {
+                    show(it, tag)
+                }
+            }
+        }
     }
 
     companion object {

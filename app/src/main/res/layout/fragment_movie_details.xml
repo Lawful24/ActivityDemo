@@ -17,18 +17,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="@dimen/default_constraint_percentage" />
+        app:layout_constraintWidth_percent="@dimen/default_constraint_width_percentage" />
 
     <Button
         android:id="@+id/video_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/video_button_text"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:drawableEnd="@drawable/ic_open_in_new_24px"
+        app:layout_constraintBottom_toTopOf="@id/bottom_sheet_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="@dimen/default_constraint_horizontal_bias"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintWidth_percent="@dimen/default_constraint_percentage" />
+        app:layout_constraintWidth_percent="@dimen/default_constraint_width_percentage" />
+
+    <Button
+        android:id="@+id/bottom_sheet_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/share_button"
+        android:drawableEnd="@drawable/ic_share_24px"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="@dimen/default_constraint_horizontal_bias"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/video_button"
+        app:layout_constraintWidth_percent="@dimen/default_constraint_width_percentage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
