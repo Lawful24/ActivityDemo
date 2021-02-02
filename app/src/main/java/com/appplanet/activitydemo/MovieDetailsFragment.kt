@@ -94,30 +94,31 @@ class MovieDetailsFragment : Fragment() {
                 if (it.results.isNotEmpty()) {
                     Log.i(TAG, "OK")
 
+                    val firstResult = it.results[0]
                     val packageManager = context?.packageManager
                     val intent = Intent(Intent.ACTION_VIEW)
 
                     // this when opens options for implementing more video player apps in the future
-                    when (it.results[0].site) {
+                    when (firstResult.site) {
                         YOUTUBE_SITE_NAME -> {
 
                             // try-catch block for checking whether the target app is installed or not
-                            val isAppInstalled = try {
+                            val isYouTubeInstalled = try {
                                 packageManager?.getPackageInfo(YOUTUBE_PACKAGE_NAME, 0)
                                 true
                             } catch (e: PackageManager.NameNotFoundException) {
                                 false
                             }
 
-                            intent.setData(Uri.parse(YOUTUBE_URL_TEMPLATE + it.results[0].key))
+                            intent.data = Uri.parse(YOUTUBE_URL_TEMPLATE + firstResult.key)
 
-                            if (isAppInstalled) {
+                            if (isYouTubeInstalled) {
                                 intent.setPackage(YOUTUBE_PACKAGE_NAME)
                             }
                         }
 
                         VIMEO_SITE_NAME -> {
-                            intent.setData(Uri.parse(VIMEO_URL_TEMPLATE + it.results[0].key))
+                            intent.data = Uri.parse(VIMEO_URL_TEMPLATE + firstResult.key)
                         }
                     }
 

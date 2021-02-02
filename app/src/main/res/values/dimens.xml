@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="default_margin">16dp</dimen>
+    <dimen name="default_padding">8dp</dimen>
     <dimen name="default_constraint_width_percentage">0.2</dimen>
     <dimen name="default_constraint_horizontal_bias">0.5</dimen>
+    <dimen name="default_constraint_vertical_bias">1.0</dimen>
+    <dimen name="default_icon_side_length">24dp</dimen>
+    <dimen name="default_icon_viewport_side_length">24</dimen>
 </resources>
