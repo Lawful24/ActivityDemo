@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/text_options"
+        android:id="@+id/text_share_externally"
         style="@style/BottomSheetItem"
         android:drawableStart="@drawable/ic_more"
         android:text="@string/options"

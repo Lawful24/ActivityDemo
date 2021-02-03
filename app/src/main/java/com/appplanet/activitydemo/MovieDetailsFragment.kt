@@ -24,9 +24,9 @@ const val MOVIE_PARCELABLE_KEY = "movie_key"
 
 const val YOUTUBE_SITE_NAME = "YouTube"
 const val VIMEO_SITE_NAME = "Vimeo"
-const val YOUTUBE_URL_TEMPLATE = "https://www.youtube.com/watch?v="
-const val VIMEO_URL_TEMPLATE = "https://vimeo.com/"
-const val YOUTUBE_PACKAGE_NAME = "com.google.android.youtube"
+const val YOUTUBE_VIDEO_URL_TEMPLATE = "https://www.youtube.com/watch?v="
+const val VIMEO_VIDEO_URL_TEMPLATE = "https://vimeo.com/"
+const val YOUTUBE_APP_PACKAGE_NAME = "com.google.android.youtube"
 
 class MovieDetailsFragment : Fragment() {
 
@@ -50,8 +50,6 @@ class MovieDetailsFragment : Fragment() {
 
             // controller declaration
             movieController = MovieController()
-
-            initBottomSheetButton()
         }.root
     }
 
@@ -77,6 +75,7 @@ class MovieDetailsFragment : Fragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess {
                 viewBinding!!.root.textView.text = it.title
+                initBottomSheetButton(it)
             }
             .doOnError {
                 requireActivity().runOnUiThread(Runnable {
@@ -94,9 +93,8 @@ class MovieDetailsFragment : Fragment() {
                 if (it.results.isNotEmpty()) {
                     Log.i(TAG, "OK")
 
-                    val firstResult = it.results[0]
-                    val packageManager = context?.packageManager
-                    val intent = Intent(Intent.ACTION_VIEW)
+                    val firstResult = it.results.first()
+                    val videoIntent = Intent(Intent.ACTION_VIEW)
 
                     // this when opens options for implementing more video player apps in the future
                     when (firstResult.site) {
@@ -104,27 +102,27 @@ class MovieDetailsFragment : Fragment() {
 
                             // try-catch block for checking whether the target app is installed or not
                             val isYouTubeInstalled = try {
-                                packageManager?.getPackageInfo(YOUTUBE_PACKAGE_NAME, 0)
+                                context?.packageManager?.getPackageInfo(YOUTUBE_APP_PACKAGE_NAME, 0)
                                 true
                             } catch (e: PackageManager.NameNotFoundException) {
                                 false
                             }
 
-                            intent.data = Uri.parse(YOUTUBE_URL_TEMPLATE + firstResult.key)
+                            videoIntent.data = Uri.parse(YOUTUBE_VIDEO_URL_TEMPLATE + firstResult.key)
 
                             if (isYouTubeInstalled) {
-                                intent.setPackage(YOUTUBE_PACKAGE_NAME)
+                                videoIntent.setPackage(YOUTUBE_APP_PACKAGE_NAME)
                             }
                         }
 
                         VIMEO_SITE_NAME -> {
-                            intent.data = Uri.parse(VIMEO_URL_TEMPLATE + firstResult.key)
+                            videoIntent.data = Uri.parse(VIMEO_VIDEO_URL_TEMPLATE + firstResult.key)
                         }
                     }
 
                     // starts the navigation to the external video player app or browser
                     viewBinding!!.root.video_button.setOnClickListener {
-                        startActivity(intent)
+                        startActivity(videoIntent)
                     }
                 } else {
                     Log.i(TAG, "NOT FOUND")
@@ -144,10 +142,10 @@ class MovieDetailsFragment : Fragment() {
             .subscribe()
     }
 
-    private fun initBottomSheetButton() {
+    private fun initBottomSheetButton(movieFetched: Movie) {
         viewBinding!!.root.bottom_sheet_button.setOnClickListener {
             requireActivity().supportFragmentManager.let {
-                MovieDetailsBottomSheetFragment.newInstance(Bundle()).apply {
+                MovieDetailsBottomSheetFragment.newInstance(movieFetched).apply {
                     show(it, tag)
                 }
             }
