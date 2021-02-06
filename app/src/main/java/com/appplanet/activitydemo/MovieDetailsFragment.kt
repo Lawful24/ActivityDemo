@@ -79,7 +79,11 @@ class MovieDetailsFragment : Fragment() {
             }
             .doOnError {
                 requireActivity().runOnUiThread(Runnable {
-                    Toast.makeText(context, "Unable to load movie.", Toast.LENGTH_LONG)
+                    Toast.makeText(
+                        context,
+                        getString(R.string.details_fragment_error),
+                        Toast.LENGTH_LONG
+                    )
                         .show()
                 })
             }
@@ -102,13 +106,15 @@ class MovieDetailsFragment : Fragment() {
 
                             // try-catch block for checking whether the target app is installed or not
                             val isYouTubeInstalled = try {
-                                context?.packageManager?.getPackageInfo(YOUTUBE_APP_PACKAGE_NAME, 0)
+                                context?.packageManager
+                                    ?.getPackageInfo(YOUTUBE_APP_PACKAGE_NAME, 0)
                                 true
                             } catch (e: PackageManager.NameNotFoundException) {
                                 false
                             }
 
-                            videoIntent.data = Uri.parse(YOUTUBE_VIDEO_URL_TEMPLATE + firstResult.key)
+                            videoIntent.data =
+                                Uri.parse(YOUTUBE_VIDEO_URL_TEMPLATE + firstResult.key)
 
                             if (isYouTubeInstalled) {
                                 videoIntent.setPackage(YOUTUBE_APP_PACKAGE_NAME)
@@ -116,7 +122,8 @@ class MovieDetailsFragment : Fragment() {
                         }
 
                         VIMEO_SITE_NAME -> {
-                            videoIntent.data = Uri.parse(VIMEO_VIDEO_URL_TEMPLATE + firstResult.key)
+                            videoIntent.data =
+                                Uri.parse(VIMEO_VIDEO_URL_TEMPLATE + firstResult.key)
                         }
                     }
 
@@ -130,7 +137,7 @@ class MovieDetailsFragment : Fragment() {
                     viewBinding!!.root.video_button.setOnClickListener {
                         Toast.makeText(
                             context,
-                            "There are no videos for this movie.",
+                            getString(R.string.no_video_movies_error),
                             Toast.LENGTH_SHORT
                         ).show()
                     }

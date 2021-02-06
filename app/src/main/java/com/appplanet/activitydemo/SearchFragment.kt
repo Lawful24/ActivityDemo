@@ -110,14 +110,22 @@ class SearchFragment : Fragment(), OnItemClickedListener {
                     adapter.setMoviesList(it.results)
                 } else {
                     requireActivity().runOnUiThread(Runnable {
-                        Toast.makeText(context, "No results found.", Toast.LENGTH_LONG)
+                        Toast.makeText(
+                            context,
+                            getString(R.string.search_movies_no_search_results),
+                            Toast.LENGTH_LONG
+                        )
                             .show()
                     })
                 }
             }
             .doOnError {
                 requireActivity().runOnUiThread(Runnable {
-                    Toast.makeText(context, "An error had occurred.", Toast.LENGTH_LONG)
+                    Toast.makeText(
+                        context,
+                        getString(R.string.search_fragment_error),
+                        Toast.LENGTH_LONG
+                    )
                         .show()
                 })
             }
@@ -132,14 +140,22 @@ class SearchFragment : Fragment(), OnItemClickedListener {
                     adapter.setMoviesList(it.results)
                 } else {
                     requireActivity().runOnUiThread(Runnable {
-                        Toast.makeText(context, "No popular movies found.", Toast.LENGTH_LONG)
+                        Toast.makeText(
+                            context,
+                            getString(R.string.popular_movies_no_results),
+                            Toast.LENGTH_LONG
+                        )
                             .show()
                     })
                 }
             }
             .doOnError {
                 requireActivity().runOnUiThread(Runnable {
-                    Toast.makeText(context, "An error had occurred.", Toast.LENGTH_LONG)
+                    Toast.makeText(
+                        context,
+                        getString(R.string.search_fragment_error),
+                        Toast.LENGTH_LONG
+                    )
                         .show()
                 })
             }

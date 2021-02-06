@@ -30,11 +30,13 @@ class MovieDetailsBottomSheetFragment : BottomSheetDialogFragment() {
     private fun initShareExtButton(movieId: Int?) {
         val shareExtIntent = Intent.createChooser(Intent().apply {
             action = Intent.ACTION_SEND
-
-            // hardcoding this value until i figure out how to set up multiple languages
             putExtra(
                 Intent.EXTRA_TEXT,
-                "Check out this movie: " + (TMDB_MOVIE_PAGE_URL_TEMPLATE + movieId)
+                String.format(
+                    "%s %s",
+                    getString(R.string.link_share_text),
+                    TMDB_MOVIE_PAGE_URL_TEMPLATE + movieId
+                )
             )
             type = "text/plain"
         }, null)
