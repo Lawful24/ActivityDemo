@@ -33,7 +33,7 @@ class MessageAdapter(
 
     class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val cardText: TextView = itemView.findViewById(R.id.card_title)
+        val cardText: TextView = itemView.findViewById(R.id.cardTitle)
 
         fun setDetailsFragmentData(message: String?) {
             cardText.text = message

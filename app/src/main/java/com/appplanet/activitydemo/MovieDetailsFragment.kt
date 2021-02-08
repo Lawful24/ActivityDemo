@@ -16,9 +16,9 @@ import com.appplanet.activitydemo.network.model.Movie
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import kotlinx.android.synthetic.main.fragment_movie_details.view.bottom_sheet_button
-import kotlinx.android.synthetic.main.fragment_movie_details.view.textView
-import kotlinx.android.synthetic.main.fragment_movie_details.view.video_button
+import kotlinx.android.synthetic.main.fragment_movie_details.view.bottomSheetButton
+import kotlinx.android.synthetic.main.fragment_movie_details.view.movieTitleTextview
+import kotlinx.android.synthetic.main.fragment_movie_details.view.videoButton
 
 const val MOVIE_PARCELABLE_KEY = "movie_key"
 
@@ -74,14 +74,14 @@ class MovieDetailsFragment : Fragment() {
         return movieController.getMovieById(movieId)
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess {
-                viewBinding!!.root.textView.text = it.title
+                viewBinding!!.root.movieTitleTextview.text = it.title
                 initBottomSheetButton(it)
             }
             .doOnError {
                 requireActivity().runOnUiThread(Runnable {
                     Toast.makeText(
                         context,
-                        getString(R.string.details_fragment_error),
+                        getString(R.string.detailsFragmentError),
                         Toast.LENGTH_LONG
                     )
                         .show()
@@ -128,16 +128,16 @@ class MovieDetailsFragment : Fragment() {
                     }
 
                     // starts the navigation to the external video player app or browser
-                    viewBinding!!.root.video_button.setOnClickListener {
+                    viewBinding!!.root.videoButton.setOnClickListener {
                         startActivity(videoIntent)
                     }
                 } else {
                     Log.i(TAG, "NOT FOUND")
 
-                    viewBinding!!.root.video_button.setOnClickListener {
+                    viewBinding!!.root.videoButton.setOnClickListener {
                         Toast.makeText(
                             context,
-                            getString(R.string.no_video_movies_error),
+                            getString(R.string.noMovieVideosError),
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -149,10 +149,10 @@ class MovieDetailsFragment : Fragment() {
             .subscribe()
     }
 
-    private fun initBottomSheetButton(movieFetched: Movie) {
-        viewBinding!!.root.bottom_sheet_button.setOnClickListener {
+    private fun initBottomSheetButton(fetchedMovie: Movie) {
+        viewBinding!!.root.bottomSheetButton.setOnClickListener {
             requireActivity().supportFragmentManager.let {
-                MovieDetailsBottomSheetFragment.newInstance(movieFetched).apply {
+                MovieDetailsBottomSheetFragment.newInstance(fetchedMovie).apply {
                     show(it, tag)
                 }
             }

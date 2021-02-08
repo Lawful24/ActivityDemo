@@ -16,8 +16,8 @@ import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import kotlinx.android.synthetic.main.card_layout.view.card_title
-import kotlinx.android.synthetic.main.fragment_search.search_bar
+import kotlinx.android.synthetic.main.card_layout.view.cardTitle
+import kotlinx.android.synthetic.main.fragment_search.movieSearchBar
 import java.util.concurrent.TimeUnit
 
 class SearchFragment : Fragment(), OnItemClickedListener {
@@ -85,7 +85,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
 
     private fun initSearchBarStream() {
         onViewCreatedDisposables.add(
-            RxTextView.afterTextChangeEvents(search_bar)
+            RxTextView.afterTextChangeEvents(movieSearchBar)
                 .map {
                     it.view().text.toString()
                 }
@@ -112,7 +112,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
                     requireActivity().runOnUiThread(Runnable {
                         Toast.makeText(
                             context,
-                            getString(R.string.search_movies_no_search_results),
+                            getString(R.string.searchMoviesNoSearchResults),
                             Toast.LENGTH_LONG
                         )
                             .show()
@@ -123,7 +123,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
                 requireActivity().runOnUiThread(Runnable {
                     Toast.makeText(
                         context,
-                        getString(R.string.search_fragment_error),
+                        getString(R.string.searchFragmentError),
                         Toast.LENGTH_LONG
                     )
                         .show()
@@ -142,7 +142,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
                     requireActivity().runOnUiThread(Runnable {
                         Toast.makeText(
                             context,
-                            getString(R.string.popular_movies_no_results),
+                            getString(R.string.popularMoviesNoResults),
                             Toast.LENGTH_LONG
                         )
                             .show()
@@ -153,7 +153,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
                 requireActivity().runOnUiThread(Runnable {
                     Toast.makeText(
                         context,
-                        getString(R.string.search_fragment_error),
+                        getString(R.string.searchFragmentError),
                         Toast.LENGTH_LONG
                     )
                         .show()
@@ -163,7 +163,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
     }
 
     private fun initRecyclerView() {
-        recyclerView = viewBinding!!.recyclerView
+        recyclerView = viewBinding!!.movieRecyclerview
         recyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
             setHasFixedSize(true)
@@ -171,7 +171,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
 
         // pass the movie list to the adapter
         recyclerView.adapter = adapter
-        recyclerTextView = viewBinding!!.root.card_title
+        recyclerTextView = viewBinding!!.root.cardTitle
     }
 
     override fun onItemClicked(recyclerViewItem: Movie) {
@@ -179,7 +179,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
 
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.run {
-            replace(R.id.fragment_container, movieFragment)
+            replace(R.id.fragmentContainer, movieFragment)
             addToBackStack(null)
             commit()
         }

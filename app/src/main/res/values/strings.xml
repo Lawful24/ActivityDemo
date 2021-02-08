@@ -1,16 +1,16 @@
 <resources>
-    <string name="app_name" translatable="false">ActivityDemo</string>
-    <string name="hint_text">Enter a message…</string>
-    <string name="default_message">Loading…</string>
-    <string name="recyclerview_text" translatable="false">dummy text</string>
-    <string name="video_button_text">Go to video</string>
-    <string name="share_email">Share via email</string>
+    <string name="appName" translatable="false">ActivityDemo</string>
+    <string name="hintText">Enter a message…</string>
+    <string name="defaultMessage">Loading…</string>
+    <string name="videoButtonNext">Go to video</string>
+    <string name="shareEmail">Share via email</string>
     <string name="options">Other options</string>
-    <string name="share_button">Share</string>
-    <string name="link_share_text">"Check out this movie I've found:"</string>
-    <string name="search_movies_no_search_results">No results found.</string>
-    <string name="search_fragment_error">An error had occurred.</string>
-    <string name="popular_movies_no_results">No popular movies found.</string>
-    <string name="details_fragment_error">Unable to load movie.</string>
-    <string name="no_video_movies_error">There are no videos for this movie.</string>
+    <string name="shareButton">Share</string>
+    <string name="linkShareText">"Check out this movie I've found:"</string>
+    <string name="searchMoviesNoSearchResults">No results found.</string>
+    <string name="searchFragmentError">An error had occurred.</string>
+    <string name="popularMoviesNoResults">No popular movies found.</string>
+    <string name="detailsFragmentError">Unable to load movie.</string>
+    <string name="noMovieVideosError">There are no videos for this movie.</string>
+    <string name="linkShareTextTemplate" translatable="false">%s %s</string>
 </resources>

@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.appplanet.activitydemo.network.model.Movie
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.bottom_sheet_share.text_share_externally
+import kotlinx.android.synthetic.main.bottom_sheet_share.textShareExternally
 
 const val TMDB_MOVIE_PAGE_URL_TEMPLATE = "https://www.themoviedb.org/movie/"
 
@@ -32,16 +32,16 @@ class MovieDetailsBottomSheetFragment : BottomSheetDialogFragment() {
             action = Intent.ACTION_SEND
             putExtra(
                 Intent.EXTRA_TEXT,
-                String.format(
-                    "%s %s",
-                    getString(R.string.link_share_text),
+                context?.getString(
+                    R.string.linkShareTextTemplate,
+                    getString(R.string.linkShareText),
                     TMDB_MOVIE_PAGE_URL_TEMPLATE + movieId
                 )
             )
             type = "text/plain"
         }, null)
 
-        text_share_externally.setOnClickListener {
+        textShareExternally.setOnClickListener {
             startActivity(shareExtIntent)
         }
     }

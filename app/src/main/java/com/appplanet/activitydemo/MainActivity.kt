@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(ActivityMainBinding.inflate(layoutInflater).root)
 
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.add(R.id.fragment_container, SearchFragment())
+        transaction.add(R.id.fragmentContainer, SearchFragment())
         transaction.commit()
     }
 }

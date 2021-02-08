@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hintText">Írja be a keresett film címét…</string>
+    <string name="defaultMessage">Betöltés…</string>
+    <string name="videoButtonNext">Videó lejátszása</string>
+    <string name="shareEmail">Megosztás email-ben</string>
+    <string name="options">További lehetőségek</string>
+    <string name="shareButton">Megosztás</string>
+    <string name="linkShareText">"Nézz rá erre a filmre, amit találtam:"</string>
+    <string name="searchMoviesNoSearchResults">Nincs találat.</string>
+    <string name="popularMoviesNoResults">Nem talátuk meg a legnébszerűbb filmeket.</string>
+    <string name="searchFragmentError">Hibát észleltünk.</string>
+    <string name="detailsFragmentError">A filmet nem sikerült betölteni.</string>
+    <string name="noMovieVideosError">Ehhez a filmhez nem tartoznak videók.</string>
+</resources>
