@@ -1,6 +1,7 @@
 package com.appplanet.activitydemo
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import com.appplanet.activitydemo.network.model.Movie
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.bottom_sheet_share.textShareExternally
+import kotlinx.android.synthetic.main.bottom_sheet_share.textShareViaEmail
 
 const val TMDB_MOVIE_PAGE_URL_TEMPLATE = "https://www.themoviedb.org/movie/"
 
@@ -24,7 +26,29 @@ class MovieDetailsBottomSheetFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initEmailButton(arguments?.getInt(MOVIE_PARCELABLE_KEY))
         initShareExtButton(arguments?.getInt(MOVIE_PARCELABLE_KEY))
+    }
+
+    private fun initEmailButton(movieId: Int?) {
+        val shareEmailIntent = Intent().apply {
+            action = Intent.ACTION_SENDTO
+            data = Uri.parse(getString(R.string.intentMailTo))
+            putExtra(Intent.EXTRA_SUBJECT, getString(R.string.emailSubject))
+            putExtra(
+                Intent.EXTRA_TEXT,
+                context?.getString(
+                    R.string.linkShareTextTemplate,
+                    getString(R.string.linkShareText),
+                    TMDB_MOVIE_PAGE_URL_TEMPLATE + movieId
+                )
+            )
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) // for the "back" button to navigate back to the app
+        }
+
+        textShareViaEmail.setOnClickListener {
+            startActivity(Intent.createChooser(shareEmailIntent, null))
+        }
     }
 
     private fun initShareExtButton(movieId: Int?) {

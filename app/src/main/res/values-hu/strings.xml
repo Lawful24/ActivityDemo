@@ -12,4 +12,5 @@
     <string name="searchFragmentError">Hibát észleltünk.</string>
     <string name="detailsFragmentError">A filmet nem sikerült betölteni.</string>
     <string name="noMovieVideosError">Ehhez a filmhez nem tartoznak videók.</string>
+    <string name="emailSubject">Filmajánló</string>
 </resources>
