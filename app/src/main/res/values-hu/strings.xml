@@ -13,4 +13,5 @@
     <string name="detailsFragmentError">A filmet nem sikerült betölteni.</string>
     <string name="noMovieVideosError">Ehhez a filmhez nem tartoznak videók.</string>
     <string name="emailSubject">Filmajánló</string>
+    <string name="noEmailAppString">Nincs telepített email kliens.</string>
 </resources>

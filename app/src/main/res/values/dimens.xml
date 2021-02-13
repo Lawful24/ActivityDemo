@@ -8,6 +8,6 @@
     <dimen name="defaultConstraintVerticalBias">1.0</dimen>
     <dimen name="defaultIconSideLength">24dp</dimen>
     <dimen name="defaultIconViewportSideLength">24</dimen>
-    <dimen name="recyclerViewTextSize">20sp</dimen>
-    <dimen name="bottomSheetTextSize">20sp</dimen>
+    <dimen name="defaultTextSize">20sp</dimen>
+    <dimen name="bottomSheetEmailErrorTextSize">10sp</dimen>
 </resources>
