@@ -83,8 +83,7 @@ class MovieDetailsFragment : Fragment() {
                         context,
                         getString(R.string.detailsFragmentError),
                         Toast.LENGTH_LONG
-                    )
-                        .show()
+                    ).show()
                 })
             }
             .subscribe()

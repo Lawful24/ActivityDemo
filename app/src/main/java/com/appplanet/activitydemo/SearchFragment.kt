@@ -114,8 +114,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
                             context,
                             getString(R.string.searchMoviesNoSearchResults),
                             Toast.LENGTH_LONG
-                        )
-                            .show()
+                        ).show()
                     })
                 }
             }
@@ -125,8 +124,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
                         context,
                         getString(R.string.searchFragmentError),
                         Toast.LENGTH_LONG
-                    )
-                        .show()
+                    ).show()
                 })
             }
             .subscribe()
@@ -144,8 +142,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
                             context,
                             getString(R.string.popularMoviesNoResults),
                             Toast.LENGTH_LONG
-                        )
-                            .show()
+                        ).show()
                     })
                 }
             }
@@ -155,8 +152,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
                         context,
                         getString(R.string.searchFragmentError),
                         Toast.LENGTH_LONG
-                    )
-                        .show()
+                    ).show()
                 })
             }
             .subscribe()

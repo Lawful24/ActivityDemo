@@ -33,7 +33,7 @@ class MovieDetailsBottomSheetFragment : BottomSheetDialogFragment() {
     private fun initEmailButton(movieId: Int?) {
         val shareEmailIntent = Intent().apply {
             action = Intent.ACTION_SENDTO
-            data = Uri.parse(getString(R.string.intentMailTo))
+            data = Uri.parse("mailto:")
             putExtra(Intent.EXTRA_SUBJECT, getString(R.string.emailSubject))
             putExtra(
                 Intent.EXTRA_TEXT,
@@ -46,8 +46,13 @@ class MovieDetailsBottomSheetFragment : BottomSheetDialogFragment() {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) // for the "back" button to navigate back to the app
         }
 
-        textShareViaEmail.setOnClickListener {
-            startActivity(Intent.createChooser(shareEmailIntent, null))
+        if (activity?.packageManager?.queryIntentActivities(shareEmailIntent, 0)?.size != 0) {
+            // todo: set email sub button to gone
+            textShareViaEmail.setOnClickListener {
+                startActivity(Intent.createChooser(shareEmailIntent, null))
+            }
+        } else {
+            textShareViaEmail.visibility = View.GONE
         }
     }
 
