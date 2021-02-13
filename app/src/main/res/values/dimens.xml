@@ -2,9 +2,12 @@
 <resources>
     <dimen name="defaultMargin">16dp</dimen>
     <dimen name="defaultPadding">8dp</dimen>
+    <dimen name="defaultDrawablePadding">20dp</dimen>
     <dimen name="defaultConstraintWidthPercentage">0.2</dimen>
     <dimen name="defaultConstraintHorizontalBias">0.5</dimen>
     <dimen name="defaultConstraintVerticalBias">1.0</dimen>
     <dimen name="defaultIconSideLength">24dp</dimen>
     <dimen name="defaultIconViewportSideLength">24</dimen>
+    <dimen name="recyclerViewTextSize">20sp</dimen>
+    <dimen name="bottomSheetTextSize">20sp</dimen>
 </resources>

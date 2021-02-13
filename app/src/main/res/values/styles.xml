@@ -7,12 +7,20 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="RecyclerViewText">
+        <item name="android:textSize">@dimen/recyclerViewTextSize</item>
+        <item name="android:drawablePadding">@dimen/defaultDrawablePadding</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">@dimen/defaultMargin</item>
+    </style>
+
     <style name="BottomSheetItem">
-        <item name="android:textSize">20sp</item>
-        <item name="android:drawablePadding">20dp</item>
+        <item name="android:textSize">@dimen/bottomSheetTextSize</item>
+        <item name="android:drawablePadding">@dimen/defaultDrawablePadding</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:padding">15dp</item>
+        <item name="android:padding">@dimen/defaultPadding</item>
         <item name="fontFamily">@font/lora</item>
     </style>
 
