@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.appplanet.activitydemo.network.model.Movie
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.bottom_sheet_share.noEmailAppText
 import kotlinx.android.synthetic.main.bottom_sheet_share.textShareExternally
 import kotlinx.android.synthetic.main.bottom_sheet_share.textShareViaEmail
 
@@ -47,13 +46,13 @@ class MovieDetailsBottomSheetFragment : BottomSheetDialogFragment() {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) // for the "back" button to navigate back to the app
         }
 
-        if (activity?.packageManager?.queryIntentActivities(shareEmailIntent, 0)?.size == 0) {
+        if (activity?.packageManager?.queryIntentActivities(shareEmailIntent, 0)?.size != 0) {
             textShareViaEmail.setOnClickListener {
                 startActivity(Intent.createChooser(shareEmailIntent, null))
             }
         } else {
-            textShareViaEmail.text = ""
-            noEmailAppText.visibility = View.VISIBLE
+            textShareViaEmail.text = getString(R.string.noEmailAppString)
+            textShareViaEmail.setTextColor(resources.getColor(R.color.red))
         }
     }
 
