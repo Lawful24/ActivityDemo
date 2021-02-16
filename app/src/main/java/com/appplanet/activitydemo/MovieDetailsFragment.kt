@@ -18,11 +18,6 @@ import com.appplanet.activitydemo.network.model.Movie
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import kotlinx.android.synthetic.main.fragment_movie_details.view.bottomSheetButton
-import kotlinx.android.synthetic.main.fragment_movie_details.view.movieTitleTextview
-import kotlinx.android.synthetic.main.fragment_movie_details.view.videoButton
-
-const val MOVIE_PARCELABLE_KEY = "movie_key"
 
 const val YOUTUBE_SITE_NAME = "YouTube"
 const val VIMEO_SITE_NAME = "Vimeo"
@@ -77,7 +72,7 @@ class MovieDetailsFragment : Fragment() {
         return movieController.getMovieById(movieId)
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess {
-                viewBinding!!.root.movieTitleTextview.text = it.title
+                viewBinding!!.movieTitleTextview.text = it.title
                 initBottomSheetButton(it)
             }
             .doOnError {
@@ -130,13 +125,13 @@ class MovieDetailsFragment : Fragment() {
                     }
 
                     // starts the navigation to the external video player app or browser
-                    viewBinding!!.root.videoButton.setOnClickListener {
+                    viewBinding!!.videoButton.setOnClickListener {
                         startActivity(videoIntent)
                     }
                 } else {
                     Log.i(TAG, "NOT FOUND")
 
-                    viewBinding!!.root.videoButton.setOnClickListener {
+                    viewBinding!!.videoButton.setOnClickListener {
                         Toast.makeText(
                             context,
                             getString(R.string.noMovieVideosError),
@@ -152,7 +147,7 @@ class MovieDetailsFragment : Fragment() {
     }
 
     private fun initBottomSheetButton(fetchedMovie: Movie) {
-        viewBinding!!.root.bottomSheetButton.setOnClickListener {
+        viewBinding!!.bottomSheetButton.setOnClickListener {
             it.findNavController().navigate(
                 MovieDetailsFragmentDirections
                 .actionMovieDetailsFragmentToMovieDetailsBottomSheetFragment(fetchedMovie)

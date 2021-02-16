@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
@@ -17,7 +16,6 @@ import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import kotlinx.android.synthetic.main.card_layout.view.cardTitle
 
 import java.util.concurrent.TimeUnit
 
@@ -27,7 +25,6 @@ class SearchFragment : Fragment(), OnItemClickedListener {
     private var viewBinding: FragmentSearchBinding? = null
 
     private lateinit var recyclerView: RecyclerView
-    private var recyclerTextView: TextView? = null
 
     private lateinit var movieController: MovieController
     private lateinit var adapter: MessageAdapter
@@ -168,7 +165,6 @@ class SearchFragment : Fragment(), OnItemClickedListener {
 
         // pass the movie list to the adapter
         recyclerView.adapter = adapter
-        recyclerTextView = viewBinding!!.root.cardTitle
     }
 
     override fun onItemClicked(recyclerViewItem: Movie, textView: View) {
