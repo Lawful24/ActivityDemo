@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.appplanet.activitydemo.network.model.Movie
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.bottom_sheet_share.textShareExternally
 import kotlinx.android.synthetic.main.bottom_sheet_share.textShareViaEmail
@@ -14,6 +14,8 @@ import kotlinx.android.synthetic.main.bottom_sheet_share.textShareViaEmail
 const val TMDB_MOVIE_PAGE_URL_TEMPLATE = "https://www.themoviedb.org/movie/"
 
 class MovieDetailsBottomSheetFragment : BottomSheetDialogFragment() {
+
+    private val args: MovieDetailsBottomSheetFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,11 +28,11 @@ class MovieDetailsBottomSheetFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initEmailButton(arguments?.getInt(MOVIE_PARCELABLE_KEY))
-        initShareExtButton(arguments?.getInt(MOVIE_PARCELABLE_KEY))
+        initEmailButton(args.fetchedMovie.id)
+        initShareExtButton(args.fetchedMovie.id)
     }
 
-    private fun initEmailButton(movieId: Int?) {
+    private fun initEmailButton(movieId: Int) {
         val shareEmailIntent = Intent().apply {
             action = Intent.ACTION_SENDTO
             data = Uri.parse("mailto:")
@@ -56,7 +58,7 @@ class MovieDetailsBottomSheetFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun initShareExtButton(movieId: Int?) {
+    private fun initShareExtButton(movieId: Int) {
         val shareExtIntent = Intent.createChooser(Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(
@@ -72,17 +74,6 @@ class MovieDetailsBottomSheetFragment : BottomSheetDialogFragment() {
 
         textShareExternally.setOnClickListener {
             startActivity(shareExtIntent)
-        }
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(movie: Movie): MovieDetailsBottomSheetFragment {
-            val args = Bundle()
-            args.putInt(MOVIE_PARCELABLE_KEY, movie.id)
-            val fragment = MovieDetailsBottomSheetFragment()
-            fragment.arguments = args
-            return fragment
         }
     }
 }

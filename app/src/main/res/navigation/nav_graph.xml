@@ -10,26 +10,35 @@
         android:name="com.appplanet.activitydemo.SearchFragment"
         android:label="SearchFragment"
         tools:layout="@layout/fragment_search">
+
         <action
             android:id="@+id/action_searchFragment_to_movieDetailsFragment"
             app:destination="@id/movieDetailsFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/movieDetailsFragment"
         android:name="com.appplanet.activitydemo.MovieDetailsFragment"
         android:label="MovieDetailsFragment"
         tools:layout="@layout/fragment_movie_details">
+
         <action
             android:id="@+id/action_movieDetailsFragment_to_movieDetailsBottomSheetFragment"
             app:destination="@id/movieDetailsBottomSheetFragment" />
+        <argument
+            android:name="clickedItem"
+            app:argType="com.appplanet.activitydemo.network.model.Movie" />
+
     </fragment>
+
     <dialog
         android:id="@+id/movieDetailsBottomSheetFragment"
         android:name="com.appplanet.activitydemo.MovieDetailsBottomSheetFragment"
         android:label="MovieDetailsBottomSheetFragment"
-        tools:layout="@layout/bottom_sheet_share" />
-    <activity
-        android:id="@+id/mainActivity"
-        android:label="activity_main"
-        tools:layout="@layout/activity_main" />
+        tools:layout="@layout/bottom_sheet_share" >
+
+        <argument
+            android:name="fetchedMovie"
+            app:argType="com.appplanet.activitydemo.network.model.Movie" />
+    </dialog>
 </navigation>

@@ -8,16 +8,16 @@
 
     <EditText
         android:id="@+id/movieSearchBar"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/defaultMargin"
+        android:layout_marginStart="@dimen/defaultMargin"
+        android:layout_marginEnd="@dimen/defaultMargin"
         android:drawableEnd="@drawable/ic_search"
-        android:ems="17"
         android:hint="@string/hintText"
         android:inputType="textPersonName"
         android:singleLine="false"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,10 +29,10 @@
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="@dimen/defaultConstraintHorizontalBias"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/movieSearchBar"
-        app:layout_constraintVertical_bias="@dimen/defaultConstraintVerticalBias"
+        app:layout_constraintVertical_bias="1.0"
         tools:listitem="@layout/card_layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

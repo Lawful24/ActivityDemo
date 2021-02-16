@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,7 +18,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.card_layout.view.cardTitle
-import kotlinx.android.synthetic.main.fragment_search.movieSearchBar
+
 import java.util.concurrent.TimeUnit
 
 class SearchFragment : Fragment(), OnItemClickedListener {
@@ -87,7 +86,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
 
     private fun initSearchBarStream() {
         onViewCreatedDisposables.add(
-            RxTextView.afterTextChangeEvents(movieSearchBar)
+            RxTextView.afterTextChangeEvents(viewBinding!!.movieSearchBar)
                 .map {
                     it.view().text.toString()
                 }
@@ -173,8 +172,9 @@ class SearchFragment : Fragment(), OnItemClickedListener {
     }
 
     override fun onItemClicked(recyclerViewItem: Movie, textView: View) {
-        val bundle = bundleOf(MOVIE_PARCELABLE_KEY to recyclerViewItem.id)
-        textView.findNavController().navigate(R.id.movieDetailsFragment, bundle)
+        textView.findNavController().navigate(
+            SearchFragmentDirections.actionSearchFragmentToMovieDetailsFragment(recyclerViewItem)
+        )
     }
 }
 

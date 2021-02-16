@@ -10,6 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
 import com.appplanet.activitydemo.databinding.FragmentMovieDetailsBinding
 import com.appplanet.activitydemo.network.controller.MovieController
 import com.appplanet.activitydemo.network.model.Movie
@@ -31,6 +33,7 @@ const val YOUTUBE_APP_PACKAGE_NAME = "com.google.android.youtube"
 class MovieDetailsFragment : Fragment() {
 
     private val TAG = "MovieDetailsFragment"
+    private val args: MovieDetailsFragmentArgs by navArgs()
 
     // initialise view binding
     private var viewBinding: FragmentMovieDetailsBinding? = null
@@ -57,10 +60,10 @@ class MovieDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // subscribes to GET movie by id stream
-        disposables.add(fetchMovieById(arguments?.getInt(MOVIE_PARCELABLE_KEY)))
+        disposables.add(fetchMovieById(args.clickedItem.id))
 
         // subscribes to GET movie videos (by id) stream
-        disposables.add(fetchMovieVideosById(arguments?.getInt(MOVIE_PARCELABLE_KEY)))
+        disposables.add(fetchMovieVideosById(args.clickedItem.id))
     }
 
     override fun onDestroyView() {
@@ -70,7 +73,7 @@ class MovieDetailsFragment : Fragment() {
         super.onDestroyView()
     }
 
-    private fun fetchMovieById(movieId: Int?): Disposable {
+    private fun fetchMovieById(movieId: Int): Disposable {
         return movieController.getMovieById(movieId)
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess {
@@ -89,7 +92,7 @@ class MovieDetailsFragment : Fragment() {
             .subscribe()
     }
 
-    private fun fetchMovieVideosById(movieId: Int?): Disposable {
+    private fun fetchMovieVideosById(movieId: Int): Disposable {
         return movieController.getMovieVideosById(movieId)
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess {
@@ -150,11 +153,10 @@ class MovieDetailsFragment : Fragment() {
 
     private fun initBottomSheetButton(fetchedMovie: Movie) {
         viewBinding!!.root.bottomSheetButton.setOnClickListener {
-            requireActivity().supportFragmentManager.let {
-                MovieDetailsBottomSheetFragment.newInstance(fetchedMovie).apply {
-                    show(it, tag)
-                }
-            }
+            it.findNavController().navigate(
+                MovieDetailsFragmentDirections
+                .actionMovieDetailsFragmentToMovieDetailsBottomSheetFragment(fetchedMovie)
+            )
         }
     }
 }
