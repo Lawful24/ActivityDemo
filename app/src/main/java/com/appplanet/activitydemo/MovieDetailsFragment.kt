@@ -157,14 +157,4 @@ class MovieDetailsFragment : Fragment() {
             }
         }
     }
-
-    companion object {
-        fun getInstance(clickedItem: Movie): MovieDetailsFragment {
-            val args = Bundle()
-            args.putInt(MOVIE_PARCELABLE_KEY, clickedItem.id)
-            val fragment = MovieDetailsFragment()
-            fragment.arguments = args
-            return fragment
-        }
-    }
 }

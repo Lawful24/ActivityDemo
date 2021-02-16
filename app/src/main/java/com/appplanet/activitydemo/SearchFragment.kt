@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.appplanet.activitydemo.databinding.FragmentSearchBinding
@@ -170,18 +172,12 @@ class SearchFragment : Fragment(), OnItemClickedListener {
         recyclerTextView = viewBinding!!.root.cardTitle
     }
 
-    override fun onItemClicked(recyclerViewItem: Movie) {
-        val movieFragment = MovieDetailsFragment.getInstance(recyclerViewItem)
-
-        val transaction = requireActivity().supportFragmentManager.beginTransaction()
-        transaction.run {
-            replace(R.id.fragmentContainer, movieFragment)
-            addToBackStack(null)
-            commit()
-        }
+    override fun onItemClicked(recyclerViewItem: Movie, textView: View) {
+        val bundle = bundleOf(MOVIE_PARCELABLE_KEY to recyclerViewItem.id)
+        textView.findNavController().navigate(R.id.movieDetailsFragment, bundle)
     }
 }
 
 interface OnItemClickedListener {
-    fun onItemClicked(recyclerViewItem: Movie)
+    fun onItemClicked(recyclerViewItem: Movie, textView: View)
 }

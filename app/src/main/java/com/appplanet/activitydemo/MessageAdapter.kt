@@ -22,7 +22,7 @@ class MessageAdapter(
         val movieListElement = movieList[position]
 
         viewHolder.cardText.setOnClickListener {
-            onItemClickedListener.onItemClicked(movieListElement)
+            onItemClickedListener.onItemClicked(movieListElement, it)
         }
 
         viewHolder.setDetailsFragmentData(movieListElement.title)
