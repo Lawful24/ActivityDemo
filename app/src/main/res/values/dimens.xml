@@ -10,4 +10,7 @@
     <dimen name="defaultIconViewportSideLength">24</dimen>
     <dimen name="defaultTextSize">20sp</dimen>
     <dimen name="bottomSheetEmailErrorTextSize">10sp</dimen>
+    <dimen name="recyclerViewCardMarginBottom">5dp</dimen>
+    <dimen name="recyclerViewCardElevation">2dp</dimen>
+    <dimen name="recyclerViewCardCornerRadius">4dp</dimen>
 </resources>
