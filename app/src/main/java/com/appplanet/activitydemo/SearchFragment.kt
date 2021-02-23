@@ -181,8 +181,16 @@ class SearchFragment : Fragment(), OnItemClickedListener {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                viewBinding!!.bottomSearchDivider.visibility = View.VISIBLE
+                viewBinding!!.bottomSearchDivider.show()
             }
+    }
+
+    private fun View.show() {
+        this.visibility = View.VISIBLE
+    }
+
+    private fun View.hide() {
+        this.visibility = View.INVISIBLE
     }
 }
 
