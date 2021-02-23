@@ -3,5 +3,6 @@
     <array name="preloaded_fonts" translatable="false">
         <item>@font/cutive_mono</item>
         <item>@font/lora</item>
+        <item>@font/nunito</item>
     </array>
 </resources>
