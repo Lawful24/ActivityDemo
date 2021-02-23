@@ -13,9 +13,11 @@ import com.appplanet.activitydemo.databinding.FragmentSearchBinding
 import com.appplanet.activitydemo.network.controller.MovieController
 import com.appplanet.activitydemo.network.model.Movie
 import com.jakewharton.rxbinding2.widget.RxTextView
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 
 import java.util.concurrent.TimeUnit
 
@@ -65,6 +67,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
 
         // subscribe to the most popular movies stream
         onStartDisposables.add(mostPopularMoviesCall())
+        onStartDisposables.add(initRedLineView())
     }
 
     override fun onStop() {
@@ -171,6 +174,15 @@ class SearchFragment : Fragment(), OnItemClickedListener {
         textView.findNavController().navigate(
             SearchFragmentDirections.actionSearchFragmentToMovieDetailsFragment(recyclerViewItem)
         )
+    }
+
+    private fun initRedLineView(): Disposable {
+        return Observable.timer(5L, TimeUnit.SECONDS, Schedulers.io())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                viewBinding!!.bottomSearchDivider.visibility = View.VISIBLE
+            }
     }
 }
 

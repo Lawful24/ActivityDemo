@@ -35,4 +35,12 @@
         app:layout_constraintVertical_bias="1.0"
         tools:listitem="@layout/card_layout" />
 
+    <View
+        android:id="@+id/bottomSearchDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/red"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
