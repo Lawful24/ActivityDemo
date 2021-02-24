@@ -10,11 +10,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textShareViaEmail"
         style="@style/BottomSheetItem"
-        android:background="?android:attr/selectableItemBackground"
-        android:clickable="true"
         android:drawableStart="@drawable/ic_send_email"
-        android:focusable="true"
-        android:gravity="center|start"
         android:text="@string/shareEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,10 +21,6 @@
         style="@style/BottomSheetItem"
         android:drawableStart="@drawable/ic_more"
         android:text="@string/options"
-        android:background="?android:attr/selectableItemBackground"
-        android:focusable="true"
-        android:clickable="true"
-        android:gravity="center|start"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textShareViaEmail" />
