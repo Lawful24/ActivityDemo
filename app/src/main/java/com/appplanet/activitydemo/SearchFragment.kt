@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.appplanet.activitydemo.databinding.FragmentSearchBinding
 import com.appplanet.activitydemo.network.controller.MovieController
 import com.appplanet.activitydemo.network.model.Movie
+import com.google.android.material.progressindicator.BaseProgressIndicator
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -26,6 +29,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
     // initialise view binding
     private var viewBinding: FragmentSearchBinding? = null
 
+    private lateinit var progressBar: LinearProgressIndicator
     private lateinit var recyclerView: RecyclerView
 
     private lateinit var movieController: MovieController
@@ -54,6 +58,8 @@ class SearchFragment : Fragment(), OnItemClickedListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        progressBar = viewBinding!!.searchProgressBar
 
         // initialises the search bar EditText
         initSearchBarStream()
@@ -106,7 +112,13 @@ class SearchFragment : Fragment(), OnItemClickedListener {
     private fun searchMoviesCall(query: String): Disposable {
         return movieController.searchMovies(query)
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe {
+                if (!progressBar.isVisible) {
+                    progressBar.show()
+                }
+            }
             .doOnSuccess {
+                progressBar.hide()
                 if (it.results.isNotEmpty()) {
                     adapter.setMoviesList(it.results)
                 } else {
@@ -120,6 +132,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
                 }
             }
             .doOnError {
+                progressBar.hide()
                 requireActivity().runOnUiThread(Runnable {
                     Toast.makeText(
                         context,
@@ -135,6 +148,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
         return movieController.getMostPopularMovies()
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess {
+                progressBar.hide()
                 if (it.results.isNotEmpty()) {
                     adapter.setMoviesList(it.results)
                 } else {
@@ -148,6 +162,7 @@ class SearchFragment : Fragment(), OnItemClickedListener {
                 }
             }
             .doOnError {
+                progressBar.hide()
                 requireActivity().runOnUiThread(Runnable {
                     Toast.makeText(
                         context,
@@ -160,6 +175,10 @@ class SearchFragment : Fragment(), OnItemClickedListener {
     }
 
     private fun initRecyclerView() {
+        if (!progressBar.isVisible) {
+            progressBar.show()
+        }
+
         recyclerView = viewBinding!!.movieRecyclerview
         recyclerView.apply {
             layoutManager = LinearLayoutManager(activity)

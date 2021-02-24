@@ -21,6 +21,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/searchProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:indeterminate="true"
+        app:layout_constraintTop_toBottomOf="@id/movieSearchBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/movieRecyclerview"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/movieRecyclerview"
         android:layout_width="match_parent"
@@ -31,7 +42,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/movieSearchBar"
+        app:layout_constraintTop_toBottomOf="@+id/searchProgressBar"
         app:layout_constraintVertical_bias="1.0"
         tools:listitem="@layout/card_layout" />
 

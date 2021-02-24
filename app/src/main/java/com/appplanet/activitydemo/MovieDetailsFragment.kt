@@ -71,11 +71,17 @@ class MovieDetailsFragment : Fragment() {
     private fun fetchMovieById(movieId: Int): Disposable {
         return movieController.getMovieById(movieId)
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe {
+                viewBinding!!.movieFetchingProgressBar.show()
+            }
             .doOnSuccess {
+                viewBinding!!.movieFetchingProgressBar.hide()
+                viewBinding!!.movieTitleTextview.visibility = View.VISIBLE
                 viewBinding!!.movieTitleTextview.text = it.title
                 initBottomSheetButton(it)
             }
             .doOnError {
+                viewBinding!!.movieFetchingProgressBar.hide()
                 requireActivity().runOnUiThread(Runnable {
                     Toast.makeText(
                         context,
