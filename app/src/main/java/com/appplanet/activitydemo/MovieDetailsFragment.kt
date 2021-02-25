@@ -15,6 +15,7 @@ import androidx.navigation.fragment.navArgs
 import com.appplanet.activitydemo.databinding.FragmentMovieDetailsBinding
 import com.appplanet.activitydemo.network.controller.MovieController
 import com.appplanet.activitydemo.network.model.Movie
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -32,6 +33,9 @@ class MovieDetailsFragment : Fragment() {
 
     // initialise view binding
     private var viewBinding: FragmentMovieDetailsBinding? = null
+
+    private lateinit var progressBar: LinearProgressIndicator
+
     private lateinit var movieController: MovieController
 
     private val disposables = CompositeDisposable()
@@ -54,6 +58,8 @@ class MovieDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        progressBar = viewBinding!!.movieFetchingProgressBar
+
         // subscribes to GET movie by id stream
         disposables.add(fetchMovieById(args.clickedItem.id))
 
@@ -72,10 +78,12 @@ class MovieDetailsFragment : Fragment() {
         return movieController.getMovieById(movieId)
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {
-                viewBinding!!.movieFetchingProgressBar.show()
+                progressBar.show()
+            }
+            .doOnTerminate {
+                progressBar.hide()
             }
             .doOnSuccess {
-                viewBinding!!.movieFetchingProgressBar.hide()
                 viewBinding!!.movieTitleTextview.visibility = View.VISIBLE
                 viewBinding!!.movieTitleTextview.text = it.title
                 initBottomSheetButton(it)

@@ -98,7 +98,6 @@ class SearchFragment : Fragment(), OnItemClickedListener {
                 }
                 .debounce(500, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-
                 .subscribe {
                     if (it.isNotEmpty()) {
                         onViewCreatedDisposables.add(searchMoviesCall(it))
@@ -117,8 +116,10 @@ class SearchFragment : Fragment(), OnItemClickedListener {
                     progressBar.show()
                 }
             }
-            .doOnSuccess {
+            .doOnTerminate {
                 progressBar.hide()
+            }
+            .doOnSuccess {
                 if (it.results.isNotEmpty()) {
                     adapter.setMoviesList(it.results)
                 } else {
@@ -132,7 +133,6 @@ class SearchFragment : Fragment(), OnItemClickedListener {
                 }
             }
             .doOnError {
-                progressBar.hide()
                 requireActivity().runOnUiThread(Runnable {
                     Toast.makeText(
                         context,
@@ -147,8 +147,10 @@ class SearchFragment : Fragment(), OnItemClickedListener {
     private fun mostPopularMoviesCall(): Disposable {
         return movieController.getMostPopularMovies()
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSuccess {
+            .doOnTerminate {
                 progressBar.hide()
+            }
+            .doOnSuccess {
                 if (it.results.isNotEmpty()) {
                     adapter.setMoviesList(it.results)
                 } else {
@@ -162,7 +164,6 @@ class SearchFragment : Fragment(), OnItemClickedListener {
                 }
             }
             .doOnError {
-                progressBar.hide()
                 requireActivity().runOnUiThread(Runnable {
                     Toast.makeText(
                         context,
