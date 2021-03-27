@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.appplanet.activitydemo.databinding.FragmentSearchBinding
 import com.appplanet.activitydemo.network.controller.MovieController
 import com.appplanet.activitydemo.network.model.Movie
-import com.google.android.material.progressindicator.BaseProgressIndicator
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.Observable
@@ -21,7 +20,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-
 import java.util.concurrent.TimeUnit
 
 class SearchFragment : Fragment(), OnItemClickedListener {

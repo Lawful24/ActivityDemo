@@ -3,7 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/searchFragment">
+    app:startDestination="@id/loadingFragment">
+
+    <fragment
+        android:id="@+id/loadingFragment"
+        android:name="com.appplanet.activitydemo.LoadingFragment"
+        android:label="fragment_blank"
+        tools:layout="@layout/fragment_loading">
+
+        <action
+            android:id="@+id/action_blankFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_blankFragment_to_connectionProblemFragment"
+            app:destination="@id/connectionProblemFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/searchFragment"
@@ -41,4 +55,10 @@
             android:name="fetchedMovie"
             app:argType="com.appplanet.activitydemo.network.model.Movie" />
     </dialog>
+
+    <fragment
+        android:id="@+id/connectionProblemFragment"
+        android:name="com.appplanet.activitydemo.ConnectionProblemFragment"
+        android:label="ConnectionProblemFragment"
+        tools:layout="@layout/fragment_connection_problem" />
 </navigation>

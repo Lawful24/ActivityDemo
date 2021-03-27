@@ -14,4 +14,6 @@
     <string name="noMovieVideosError">Ehhez a filmhez nem tartoznak videók.</string>
     <string name="emailSubject">Filmajánló</string>
     <string name="noEmailAppString">Nincs telepített email kliens.</string>
+    <string name="connectionErrorText">Hoppá! Hálózati hiba történt.</string>
+    <string name="loadingFragmentText">Betöltés…</string>
 </resources>

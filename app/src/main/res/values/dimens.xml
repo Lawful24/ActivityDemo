@@ -14,4 +14,7 @@
     <dimen name="recyclerViewCardMarginBottom">5dp</dimen>
     <dimen name="recyclerViewCardElevation">2dp</dimen>
     <dimen name="recyclerViewCardCornerRadius">4dp</dimen>
+
+    <dimen name="loadingFragmentMessageTextSize">20sp</dimen>
+    <dimen name="connectionErrorIconSideLength">150dp</dimen>
 </resources>

@@ -15,4 +15,6 @@
     <string name="linkShareTextTemplate" translatable="false">%s %s</string>
     <string name="emailSubject">Movie Recommendation</string>
     <string name="noEmailAppString">No email client installed.</string>
+    <string name="connectionErrorText">Whoops! A connection issue has occurred.</string>
+    <string name="loadingFragmentText">Loading…</string>
 </resources>
